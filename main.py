@@ -45,9 +45,10 @@ class ChatRequest(BaseModel):
 def root():
     return {"status": "Tax Chatbot API is running!"}
 
+
 @app.post("/chat")
 async def chat(request: ChatRequest):
-    def generate():
+    async def generate():
         response = query_engine.query(request.message)
         for chunk in response.response_gen:
             yield chunk
