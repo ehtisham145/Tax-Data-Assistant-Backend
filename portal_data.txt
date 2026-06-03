@@ -1,0 +1,93 @@
+Q1:How do I create an invoice?
+
+Go to Invoices → New Invoice. 
+Fill in the 6 steps: Invoice Details, Supplier, Buyer, Items, Payment, 
+then Submit. Your invoice is assigned a unique number and submitted 
+to the ASP automatically.
+
+Q2:What invoice types are supported?
+
+The platform supports:
+• Tax Invoice (380)
+• Credit Note (381)
+• Commercial Invoice (480)
+• Continuous Supply Invoice (875)
+
+All per the UAE PINT / PEPPOL BIS 3.0 standard.
+
+Q3: What do the invoice statuses mean?
+
+Draft → editable, not yet submitted.
+Pending → submitted, XML being generated.
+Submitted → sent to ASP.
+Validated → accepted by FTA.
+Rejected → FTA found errors; check rejection reason.
+Cancelled → voided.
+Paid → payment received.
+
+Q4: How do I download the UBL XML?
+
+Open the invoice detail page. Once 
+status is Submitted or Validated, a "Download XML" button appears.
+ Click it to download the PEPPOL UBL 2.1 XML file.
+
+Q5:How do I issue a credit note?
+
+Create a new invoice and select type "Credit Note (381)". 
+Enter the original invoice number in the Reference Number field. Credit notes reverse a 
+previously issued tax invoice for returns, cancellations, or corrections.
+
+Q6:What VAT rates are available?
+
+Standard: 5% — applies to most goods & services.
+Zero-rated: 0% — exports, international transport, certain food items.
+Exempt: no VAT — financial services, residential property.
+
+Q7:What is a TRN?
+
+TRN (Tax Registration Number) is a 15-digit number issued by the UAE 
+Federal Tax Authority. It is required
+ on every B2B tax invoice for both the seller and buyer.
+
+Q8:What is PEPPOL / UAE PINT?
+
+PEPPOL (Pan-European Public Procurement On-Line) is a global e-invoicing network.
+UAE PINT is the UAE national profile based on PEPPOL BIS 3.0
+and UBL 2.1, mandated by the UAE FTA for e-invoicing compliance.
+
+
+Q9: How do I add a company?
+
+Go to Settings → Companies → Add Company. Enter the company name, TRN, address, and contact details. 
+You must have at least one active company to create invoices.
+
+Q10: How do I add a customer?
+
+Go to Customers → Add Customer. Fill in the buyer name, TRN (required for B2B),
+ address, and contact. Once saved, 
+the customer appears in the Buyer picker when creating invoices.
+
+Q11: How do I set up two-factor authentication?
+
+Go to Account → Security → Enable MFA. Scan the QR code 
+with an authenticator app (e.g. Google Authenticator).
+ Enter the 6-digit code to confirm. MFA adds a secure second login step.
+
+Q12:What user roles exist?
+
+Admin: full access — manage company, users, and all invoices.
+Accountant: create and manage invoices.
+Viewer: read-only access to invoices.
+Inbound Supplier: accesses the supplier portal only.
+
+Q13: Is this platform FTA certified?
+
+Yes. E-Numerak is FTA-certified and fully compliant with 
+Federal Decree-Law No. 16 of 2024. It generates PEPPOL BIS 3.0 / 
+UBL 2.1 e-invoices and submits them to the Accredited Service Provider (ASP).
+
+Q14: How can I get started?
+
+Sign up at the E-Invoice Portal, register your company TRN, add your
+ customers, and create your 
+first invoice. Our onboarding wizard guides you through each step.
