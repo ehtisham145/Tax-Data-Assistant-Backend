@@ -35,7 +35,18 @@ chroma_client = chromadb.PersistentClient(path="./chroma_db")
 chroma_collection = chroma_client.get_or_create_collection("tax_data")
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
-index = VectorStoreIndex.from_vector_store(vector_store)
+# index = VectorStoreIndex.from_vector_store(vector_store)
+if os.path.exists("./chroma_db") and len(chroma_collection.get()["ids"]) > 0:
+    # Data already hai — sirf load karo
+    index = VectorStoreIndex.from_vector_store(vector_store)
+    print("✅ Existing data loaded!")
+else:
+    # Data nahi hai — ingest karo
+    from llama_index.core import SimpleDirectoryReader
+    documents = SimpleDirectoryReader(input_files=["sample_data.txt"]).load_data()
+    index = VectorStoreIndex.from_documents(documents, storage_context=storage_context)
+    print("✅ Data ingested fresh!")
+
 query_engine = index.as_query_engine(streaming=True)
 
 class ChatRequest(BaseModel):
