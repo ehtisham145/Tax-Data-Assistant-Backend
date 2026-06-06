@@ -28,7 +28,7 @@ app = FastAPI(title="E-Numerak Tax Chatbot API")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://e-numerak.com","http://localhost:3000"],
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,
