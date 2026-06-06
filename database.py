@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 def get_connection():
     """Get SQLite database connection."""
     return sqlite3.connect(SQLITE_DB_PATH)
+
 def init_db():
     """Create users and conversations tables if they don't exist."""
     try:
@@ -18,7 +19,7 @@ def init_db():
             CREATE TABLE IF NOT EXISTS users (
                 session_id TEXT PRIMARY KEY,
                 name TEXT NOT NULL,
-                email TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
@@ -75,7 +76,7 @@ def get_conversation_history(session_id: str):
         conn.close()
 
 def insert_user(session_id: str, name: str, email: str) -> bool:
-    """Insert new user. Returns True if inserted, False if email exists."""
+    """Insert new user. Returns True if inserted, False if email already exists."""
     try:
         conn = get_connection()
         cursor = conn.cursor()
@@ -112,6 +113,22 @@ def get_user_by_session(session_id: str):
     except sqlite3.Error as e:
         logger.error(f"❌ Error fetching user: {e}")
         raise
+    finally:
+        conn.close()
+
+# ✅ NEW — look up user by email instead of session_id
+def get_user_by_email(email: str):
+    """Fetch user by email. Returns (name, email) or None."""
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT name, email FROM users WHERE email = ?", (email,)
+        )
+        return cursor.fetchone()
+    except sqlite3.Error as e:
+        logger.error(f"❌ Error fetching user by email: {e}")
+        return None
     finally:
         conn.close()
 

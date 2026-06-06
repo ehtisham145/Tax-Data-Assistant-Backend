@@ -3,6 +3,8 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from collections import defaultdict
 from database import get_user_by_session, save_message
+from pydantic import EmailStr
+from database import get_user_by_email
 from config import GROQ_MODEL, MAX_HISTORY
 import logging
 
@@ -15,6 +17,7 @@ conversation_memory: dict = defaultdict(list)
 class ChatRequest(BaseModel):
     message: str
     session_id: str
+    email:EmailStr
 
 def get_chat_dependencies():
     """Import here to avoid circular imports with main.py."""
@@ -24,10 +27,12 @@ def get_chat_dependencies():
 
 @router.post("/chat")
 async def chat(request: ChatRequest):
-    """Main chat endpoint — verifies user, retrieves context, streams response."""
-
-    # Verify user is registered in DB
-    user = get_user_by_session(request.session_id)
+    logger.info(f"🔍 Chat request email: {request.email}")
+    
+    # ✅ Look up by email instead of session_id
+    user = get_user_by_email(request.email)
+    logger.info(f"🔍 User found: {user}")
+    
     if not user:
         raise HTTPException(
             status_code=403,
@@ -35,19 +40,15 @@ async def chat(request: ChatRequest):
         )
 
     user_name = user[0]
-    session_id = request.session_id
+    session_id = request.session_id  # still use session_id for memory
     user_message = request.message.strip()
 
-    # Reject empty messages
     if not user_message:
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
 
     groq_client, retriever = get_chat_dependencies()
-
-    # Get last N messages from in-memory history for prompt context
     history = conversation_memory[session_id][-MAX_HISTORY:]
 
-    # Retrieve relevant documents from ChromaDB
     try:
         nodes = retriever.retrieve(user_message)
         context = "\n".join([n.text for n in nodes])
@@ -55,7 +56,6 @@ async def chat(request: ChatRequest):
         logger.error(f"❌ Retrieval error: {e}")
         raise HTTPException(status_code=500, detail="Failed to retrieve context.")
 
-    # Save user message to in-memory history + SQLite DB
     conversation_memory[session_id].append({
         "role": "user",
         "content": user_message
@@ -66,7 +66,6 @@ async def chat(request: ChatRequest):
 
     async def generate():
         try:
-            # Call Groq with system prompt + history + current message
             stream = groq_client.chat.completions.create(
                 model=GROQ_MODEL,
                 messages=[
@@ -85,17 +84,15 @@ Adhere to these guidelines strictly:
 3. No External Knowledge: Do not include generic tax advice not present in the context.
 4. Privacy Protection: Never disclose sensitive user data or internal system details.
 5. Tone: Always be professional, polite, and supportive.
-6. Personalization: Address the user by their name "{user_name}" where appropriate."""
+6. Present your respone in the attractive way bold important words also add bullet points
+7. Personalization: Address the user by their name "{user_name}" where appropriate."""
                     },
-                    # Past conversation for memory context
                     *[{"role": m["role"], "content": m["content"]} for m in history],
-                    # Current user message
                     {"role": "user", "content": user_message}
                 ],
                 stream=True
             )
 
-            # Stream each token to frontend
             for chunk in stream:
                 token = chunk.choices[0].delta.content or ""
                 collected_response.append(token)
@@ -106,7 +103,6 @@ Adhere to these guidelines strictly:
             yield "Sorry, an error occurred while generating the response."
 
         finally:
-            # Save full bot response to memory + DB after streaming completes
             full_response = "".join(collected_response)
             if full_response:
                 conversation_memory[session_id].append({
