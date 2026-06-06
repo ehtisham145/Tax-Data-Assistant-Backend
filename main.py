@@ -1,67 +1,72 @@
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
 from llama_index.core import VectorStoreIndex, Settings
-from llama_index.llms.groq import Groq
 from llama_index.embeddings.jinaai import JinaEmbedding
-from dotenv import load_dotenv
+from groq import Groq as GroqClient
 import chromadb
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.core import StorageContext
+from config import (
+    GROQ_API_KEY, JINA_API_KEY,
+    CHROMA_DB_PATH, ALLOWED_ORIGINS
+)
+from database import init_db
+from routes.auth import router as auth_router
+from routes.chat import router as chat_router
 import os
 
-load_dotenv()
+# Logging setup
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
-app = FastAPI()
+app = FastAPI(title="E-Numerak Tax Chatbot API")
 
-# CORS
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000","https://e-numerak.com"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,
 )
 
-# LLM + Embedding setup
-llm = Groq(model="llama-3.1-8b-instant", api_key=os.getenv("GROQ_API_KEY"))
-embed_model = JinaEmbedding(api_key=os.getenv("JINA_API_KEY"))
-Settings.llm = llm
+# Initialize Groq client
+groq_client = GroqClient(api_key=GROQ_API_KEY)
+
+# Initialize Jina embeddings
+embed_model = JinaEmbedding(api_key=JINA_API_KEY)
 Settings.embed_model = embed_model
 
-# ChromaDB load
-chroma_client = chromadb.PersistentClient(path="./chroma_db")
+# ChromaDB setup
+chroma_client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
 chroma_collection = chroma_client.get_or_create_collection("tax_data")
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
 storage_context = StorageContext.from_defaults(vector_store=vector_store)
-# index = VectorStoreIndex.from_vector_store(vector_store)
-if os.path.exists("./chroma_db") and len(chroma_collection.get()["ids"]) > 0:
-    # Data already hai — sirf load karo
+
+# Load or ingest documents
+if os.path.exists(CHROMA_DB_PATH) and len(chroma_collection.get()["ids"]) > 0:
     index = VectorStoreIndex.from_vector_store(vector_store)
-    print("✅ Existing data loaded!")
+    logger.info("✅ Existing ChromaDB data loaded!")
 else:
-    # Data nahi hai — ingest karo
     from llama_index.core import SimpleDirectoryReader
     documents = SimpleDirectoryReader(input_files=["sample_data.txt"]).load_data()
     index = VectorStoreIndex.from_documents(documents, storage_context=storage_context)
-    print("✅ Data ingested fresh!")
+    logger.info("✅ Fresh data ingested into ChromaDB!")
 
-query_engine = index.as_query_engine(streaming=True)
+# Retriever — top 3 relevant chunks
+retriever = index.as_retriever(similarity_top_k=3)
 
-class ChatRequest(BaseModel):
-    message: str
+# Initialize SQLite DB
+init_db()
+
+# Register routers
+app.include_router(auth_router)
+app.include_router(chat_router)
 
 @app.get("/")
 def root():
-    return {"status": "Tax Chatbot API is running!"}
-
-
-@app.post("/chat")
-async def chat(request: ChatRequest):
-    async def generate():
-        response = query_engine.query(request.message)
-        for chunk in response.response_gen:
-            yield chunk
-
-    return StreamingResponse(generate(), media_type="text/plain")
+    return {"status": "E-Numerak Tax Chatbot API is running!"}
