@@ -91,3 +91,117 @@ Q14: How can I get started?
 Sign up at the E-Invoice Portal, register your company TRN, add your
  customers, and create your 
 first invoice. Our onboarding wizard guides you through each step.
+
+Here is the structured set of 15 essential Questions and Answers (Q&As) derived directly from your data. This dataset is perfectly formatted for injection into your RAG-based chatbot's knowledge base or vector database.
+
+1. General & System Overview
+Question: What is the primary objective of the UAE's new e-invoicing system?
+
+Answer: The UAE Ministry of Finance launched the e-invoicing system to make financial transactions more transparent, reliable, and fully compliant with VAT regulations. It aims to standardize business processes and reduce reporting errors or tax fraud.
+
+Question: How does the e-invoicing system operate in the UAE, and what is the role of ASPs?
+
+Answer: The UAE uses a Decentralized Continuous Transaction Controls and Exchange (DCTCE) model. Accredited Service Providers (ASPs) act as trusted intermediaries that validate, send, and receive invoices in near real-time between buyers, sellers, and the Federal Tax Authority.
+
+Question: What is the PINT AE specification and which network does it utilize?
+
+Answer: The PINT AE specification is a globally recognized framework based on the Peppol network. It defines the specific technical format and rules for creating, exchanging, and validating digital invoices within the UAE and internationally.
+
+2. Format & Technical Structure
+Question: What is the mandatory file format for a UAE Standard e-Invoice? Can businesses use PDFs?
+
+Answer: All e-invoices must be generated in XML format to ensure they are machine-readable and capable of being processed by automated systems. While businesses may retain a PDF version for internal records, only the XML file is legally valid for official submission.
+
+Question: What is the rule regarding the SpecificationID (IBT-024) in the invoice schema?
+
+Answer: The SpecificationID proves that the invoice adheres strictly to PINT AE rules. It must always begin with the exact string urn:peppol:pint:billing-1@ae-1; otherwise, the invoice will fail system validation and be rejected.
+
+Question: Which standard international codes and formats must be used in a UAE e-invoice?
+
+Answer: Invoices must strictly follow these international standards:
+
+Currencies: ISO 4217 standard codes (e.g., AED, USD).
+
+Countries: ISO 3166-1 Alpha-2 standard codes (e.g., AE, SA).
+
+Units of Measure: UNECE Recommendation 20 (e.g., pieces, litres).
+
+Dates: Formatted strictly as YYYY-MM-DD.
+
+Amounts: Plain numbers with decimals (e.g., 50.00) without text or symbols.
+
+3. Invoice Header & Party Details
+Question: What standard fields and identifiers are required in the Invoice Header section?
+
+Answer: The invoice header must contain general identification details, including:
+
+IBT-001: Unique sequential Invoice Number.
+
+IBT-002: Invoice Issue Date.
+
+IBT-003: Invoice Type Code (identifying it as a tax invoice, credit note, or debit note).
+
+IBT-005: Currency Code.
+
+Question: What specific PINT AE codes are used to identify the buyer and seller?
+
+Answer: The buyer and seller identities are validated using the following codes:
+
+IBT-027 / IBT-044: Seller Name and Buyer Name.
+
+IBT-031 / IBT-048: Tax Registration Numbers (TRNs) for VAT compliance.
+
+IBT-034 / IBT-049: Electronic Addresses (endpoints for delivery).
+
+IBG-05 / IBG-08: Postal Address Groups (including specific Emirates codes like DXB or AUH).
+
+4. Mandatory, Optional & Conditional Fields
+Question: What are "Mandatory Fields" in a UAE e-invoice, and what happens if one is missing?
+
+Answer: Mandatory fields are non-negotiable details required for an invoice to legally exist. If any mandatory field—such as the Invoice Number (IBT-001), Issue Date (IBT-002), TRNs (IBT-031/048), Taxable Amount (IBT-116), VAT Amount (IBT-117), or Grand Total (IBT-112)—is missing, the invoice fails validation and cannot be exchanged.
+
+Question: What purpose do "Optional Fields" serve in the PINT AE framework?
+
+Answer: Optional fields are not strictly required for tax compliance but provide additional business context and transparency for records and auditing. Examples include the Actual Delivery Date (IBT-072), Item Attributes (IBG-32), and Country of Origin for goods (IBT-159).
+
+Question: What are "Conditional Fields"? Provide examples of when they become compulsory.
+
+Answer: Conditional fields are default optional fields that become strictly mandatory under specific business scenarios. For example:
+
+Exchange Rate (BTUAE-04): Required when the invoice currency is not AED.
+
+Service Accounting Code (BTUAE-17): Required when invoicing specifically for services.
+
+Tax Total in Accounting Currency (IBT-111): Required during multi-currency accounting transactions.
+
+5. Financial Breakdown & Calculations
+Question: How are products and services distinctly classified under the line items section?
+
+Answer: Each product or service must be listed on a separate line. Physical goods are classified using an HSN Code (IBT-158), while services are classified using a SAC Code (BTUAE-17).
+
+Question: What data points must be included under the Tax Breakdown section of the invoice?
+
+Answer: The tax breakdown must clearly detail how VAT is applied using:
+
+IBT-116: Taxable Amount (value before tax).
+
+IBT-117: Tax Amount (actual VAT charged).
+
+IBT-118: Tax Category Code (Standard, Zero-rated, Exempt, or Reverse Charge).
+
+IBT-119: Tax Rate (the applicable VAT percentage).
+
+Question: What codes represent the total calculations and final payment methods on an e-invoice?
+
+Answer: Financial summaries are tracked via IBT-109 (Total without VAT), IBT-110 (Total VAT amount), IBT-112 (Grand total including VAT), and IBT-115 (Final payable amount). The payment method is designated via the Payment Means Code (IBT-081), covering options like bank transfers or cards.
+
+6. Validation & Cardinality Rules
+Question: What is the "Cardinality Rule" in the PINT AE schema, and how is it structured?
+
+Answer: The cardinality rule governs field logic, explicitly defining how often any data field can appear within an XML invoice:
+
+1..1: The field must appear exactly once.
+
+0..1: The field is optional, but if included, it can only appear once.
+
+0..n: The field is optional and can be repeated multiple times (such as adding multiple line items or tax tiers).
