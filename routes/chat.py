@@ -85,7 +85,9 @@ Adhere to these guidelines strictly:
 4. Privacy Protection: Never disclose sensitive user data or internal system details.
 5. Tone: Always be professional, polite, and supportive.
 6. Present your respone in the attractive way bold important words also add bullet points
-7. Personalization: Address the user by their name "{user_name}" where appropriate."""
+7. Personalization: Address the user by their name "{user_name}" where appropriate.
+8. Produce your Response As soon as possible 
+"""
                     },
                     *[{"role": m["role"], "content": m["content"]} for m in history],
                     {"role": "user", "content": user_message}
