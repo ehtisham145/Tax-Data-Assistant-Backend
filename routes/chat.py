@@ -19,19 +19,18 @@ conversation_memory: dict = defaultdict(list)
 
 # ─── Memory Helpers ───────────────────────────────────────────────────────────
 
-def get_history_from_redis(session_id: str) -> list:
+def get_history_from_memory(session_id: str) -> list:
     return list(conversation_memory[session_id])
 
-def save_history_to_redis(session_id: str, history: list):
+def save_history_to_memory(session_id: str, history: list):
     conversation_memory[session_id] = history[-MAX_HISTORY:]
 
-def clear_history_from_redis(session_id: str):
+def clear_history_from_memory(session_id: str):
     if session_id in conversation_memory:
         del conversation_memory[session_id]
 
-logger = logging.getLogger(__name__)
 
-router = APIRouter()
+# ─── Chat Endpoint ────────────────────────────────────────────────────────────
 
 @router.post("/chat")
 async def chat(
@@ -39,7 +38,7 @@ async def chat(
     groq_client=Depends(get_groq_client),
     retriever=Depends(get_retriever),
 ):
-    # 1. Auth + RAG parallel — dono ek saath chalao
+    # 1. Auth + RAG parallel
     try:
         user_result, nodes = await asyncio.gather(
             run_in_threadpool(get_user_by_email, body.email),
@@ -60,12 +59,12 @@ async def chat(
     session_id = body.session_id
     context = "\n".join([n.text for n in nodes]) if nodes else "No relevant context found."
 
-    # 2. History Redis se lo
-    history = get_history_from_redis(session_id)
+    # 2. History memory se lo
+    history = get_history_from_memory(session_id)
 
-    # 3. User message save karo (parallel — await nahi karo abhi)
+    # 3. User message memory mein save karo
     history.append({"role": "user", "content": body.message})
-    save_history_to_redis(session_id, history)
+    save_history_to_memory(session_id, history)
 
     # DB save background mein — response block nahi karega
     asyncio.create_task(
@@ -92,10 +91,10 @@ async def chat(
 
     async def generate():
         try:
-            # Sync Groq stream ko thread mein run karo
+            # Groq stream ek baar banao
             stream = await run_in_threadpool(
                 lambda: groq_client.chat.completions.create(
-                    model="llama-3.1-8b-instant",  # fastest Groq model
+                    model=GROQ_MODEL,
                     messages=[
                         {"role": "system", "content": system_prompt},
                         *[{"role": m["role"], "content": m["content"]} for m in history[:-1]],
@@ -105,15 +104,17 @@ async def chat(
                 )
             )
 
-            # Async iteration via threadpool
-            def get_next_chunk(iterator):
+            # ✅ Ek baar iterator banao
+            stream_iter = iter(stream)
+
+            def get_next_chunk():
                 try:
-                    return next(iterator)
+                    return next(stream_iter)
                 except StopIteration:
                     return None
 
             while True:
-                chunk = await run_in_threadpool(get_next_chunk, iter(stream))
+                chunk = await run_in_threadpool(get_next_chunk)
                 if chunk is None:
                     break
                 token = chunk.choices[0].delta.content or ""
@@ -129,7 +130,7 @@ async def chat(
             full_response = "".join(collected_response)
             if full_response:
                 history.append({"role": "assistant", "content": full_response})
-                save_history_to_redis(session_id, history)
+                save_history_to_memory(session_id, history)
                 # DB save background mein
                 asyncio.create_task(
                     run_in_threadpool(save_message, session_id, "assistant", full_response)
@@ -145,7 +146,7 @@ async def chat(
 async def clear_memory(session_id: str):
     """Clear in-memory conversation history — call on New Chat."""
     try:
-        await run_in_threadpool(clear_history_from_redis, session_id)
+        clear_history_from_memory(session_id)
         logger.info(f"✅ Memory cleared for session: {session_id}")
         return {"status": "Memory cleared!", "session_id": session_id}
     except Exception as e:
