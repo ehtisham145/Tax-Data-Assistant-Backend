@@ -4,31 +4,33 @@ import logging
 from typing import Optional
 logger = logging.getLogger(__name__)
 
-
 def insert_user(session_id: str, name: str, email: str) -> tuple[bool, str]:
-    """
-    Insert new user atomically using INSERT OR IGNORE.
-    Returns (True, name) if inserted, (False, existing_name) if duplicate.
-    Race condition safe — no separate SELECT needed.
-    """
     try:
         with get_db() as conn:
-            conn.execute(
-                "INSERT OR IGNORE INTO users (session_id, name, email) VALUES (?, ?, ?)",
-                (session_id, name, email),
-            )
-            # Check if row was actually inserted
-            row = conn.execute(
-                "SELECT name FROM users WHERE email = ?", (email,)
+            # Pehle check karo email exist karta hai ya nahi
+            existing = conn.execute(
+                "SELECT session_id, name FROM users WHERE email = ?", (email,)
             ).fetchone()
 
-            inserted = (row["name"] == name)
-            return inserted, row["name"]
+            if existing:
+                # ✅ Email mila — session_id update karo (page refresh case)
+                conn.execute(
+                    "UPDATE users SET session_id = ? WHERE email = ?",
+                    (session_id, email),
+                )
+                return False, existing["name"]
+
+            # Naya user — insert karo
+            conn.execute(
+                "INSERT INTO users (session_id, name, email) VALUES (?, ?, ?)",
+                (session_id, name, email),
+            )
+            return True, name
 
     except sqlite3.Error as e:
         logger.error(f"❌ Error inserting user [{email}]: {e}")
         raise
-
+    
 def get_user_by_session(session_id: str) -> Optional[tuple]:
     """Fetch user by session_id. Returns (name, email) or None."""
     try:

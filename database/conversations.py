@@ -3,21 +3,22 @@ from database.connections import get_db
 import logging
 logger = logging.getLogger(__name__)
 
-def save_message(session_id: str, role: str, message: str) -> bool:
-    """
-    Save a chat message. Returns True on success, raises on failure.
-    Caller must handle errors — silent failure removed intentionally.
-    """
-    try:
-        with get_db() as conn:
-            conn.execute(
-                "INSERT INTO conversations (session_id, role, message) VALUES (?, ?, ?)",
-                (session_id, role, message),
-            )
-        return True
-    except sqlite3.Error as e:
-        logger.error(f"❌ Error saving message for session [{session_id}]: {e}")
-        raise
+def save_message(session_id: str, role: str, message: str):
+    with get_db() as conn:
+        # Pehle check karo session exist karta hai ya nahi
+        user = conn.execute(
+            "SELECT 1 FROM users WHERE session_id = ?", (session_id,)
+        ).fetchone()
+
+        if not user:
+            logger.warning(f"⚠️ Session {session_id} not in DB yet — skipping save")
+            return  # silently skip, crash mat karo
+
+        conn.execute(
+            "INSERT INTO conversations (session_id, role, message) VALUES (?, ?, ?)",
+            (session_id, role, message),
+        )
+        conn.commit()
 
 def get_conversation_history(session_id: str, limit: int = 50) -> list:
     """
