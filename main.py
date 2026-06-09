@@ -11,11 +11,13 @@ from config import (
     GROQ_API_KEY, JINA_API_KEY,
     CHROMA_DB_PATH, ALLOWED_ORIGINS
 )
-from database import init_db
+from database.database import init_db
 from routes.auth import router as auth_router
 from routes.chat import router as chat_router
+from slowapi import Limiter,_rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 import os
-
 # Logging setup
 logging.basicConfig(
     level=logging.INFO,
@@ -25,6 +27,9 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="E-Numerak Tax Chatbot API")
 
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,

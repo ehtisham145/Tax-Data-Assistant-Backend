@@ -2,9 +2,9 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from collections import defaultdict
-from database import get_user_by_session, save_message
+from database.conversations import save_message
 from pydantic import EmailStr
-from database import get_user_by_email
+from database.users import get_user_by_email,get_user_by_session
 from config import GROQ_MODEL, MAX_HISTORY
 import logging
 
@@ -135,7 +135,7 @@ def get_history(session_id: str):
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
 
-    from database import get_conversation_history
+    from database.users import get_conversation_history
     history = get_conversation_history(session_id)
 
     return {
