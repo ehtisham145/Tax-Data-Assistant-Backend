@@ -1,6 +1,7 @@
 import sqlite3
-from connections import get_db
+from database.connections import get_db
 import logging
+from typing import Optional
 logger = logging.getLogger(__name__)
 
 

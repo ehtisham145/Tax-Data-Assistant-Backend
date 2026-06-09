@@ -1,5 +1,5 @@
 import sqlite3
-from config import SQLITE_DB_PATH
+from utils.config import SQLITE_DB_PATH
 from contextlib import contextmanager
 
 # ─── Connection Pool (Thread-safe) ──────────────────────────────────────────
