@@ -8,3 +8,7 @@ def get_groq_client():
 def get_retriever():
     from main import retriever
     return retriever
+
+def get_openai_client():
+    from main import openai_client
+    return openai_client

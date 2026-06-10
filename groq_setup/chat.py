@@ -5,8 +5,8 @@ from collections import defaultdict
 from starlette.concurrency import run_in_threadpool
 from database.conversations import save_message, get_conversation_history
 from database.users import get_user_by_email, get_user_by_session
-from utils.config import OPENAI_MODEL, MAX_HISTORY
-from utils.helpers import get_openai_client, get_retriever
+from utils.config import GROQ_MODEL, MAX_HISTORY
+from utils.helpers import get_groq_client, get_retriever
 from schemas.chat_schema import ChatRequest
 import logging
 
@@ -35,7 +35,7 @@ def clear_history_from_memory(session_id: str):
 @router.post("/chat")
 async def chat(
     body: ChatRequest,
-    openai_client=Depends(get_openai_client),
+    groq_client=Depends(get_groq_client),
     retriever=Depends(get_retriever),
 ):
     # 1. Auth + RAG parallel
@@ -91,26 +91,39 @@ async def chat(
 
     async def generate():
         try:
-            # OpenAI async streaming — no run_in_threadpool needed
-            stream = await openai_client.chat.completions.create(
-                model=OPENAI_MODEL,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    *[{"role": m["role"], "content": m["content"]} for m in history[:-1]],
-                    {"role": "user", "content": body.message},
-                ],
-                stream=True,
+            # Groq stream ek baar banao
+            stream = await run_in_threadpool(
+                lambda: groq_client.chat.completions.create(
+                    model=GROQ_MODEL,
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        *[{"role": m["role"], "content": m["content"]} for m in history[:-1]],
+                        {"role": "user", "content": body.message},
+                    ],
+                    stream=True,
+                )
             )
 
-            # AsyncOpenAI supports async iteration natively
-            async for chunk in stream:
+            # ✅ Ek baar iterator banao
+            stream_iter = iter(stream)
+
+            def get_next_chunk():
+                try:
+                    return next(stream_iter)
+                except StopIteration:
+                    return None
+
+            while True:
+                chunk = await run_in_threadpool(get_next_chunk)
+                if chunk is None:
+                    break
                 token = chunk.choices[0].delta.content or ""
                 if token:
                     collected_response.append(token)
                     yield token
 
         except Exception as e:
-            logger.error(f"❌ OpenAI streaming error: {e}")
+            logger.error(f"❌ Groq streaming error: {e}")
             yield "Sorry, an error occurred while generating the response."
 
         finally:

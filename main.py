@@ -8,8 +8,7 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 from utils.config import (
     GROQ_API_KEY, JINA_API_KEY,
-    CHROMA_DB_PATH, ALLOWED_ORIGINS
-)
+    CHROMA_DB_PATH, ALLOWED_ORIGINS, OPENAI_API_KEY)
 from database.init_db import init_db
 
 # Logging setup
@@ -22,6 +21,7 @@ logger = logging.getLogger(__name__)
 # ─── Global Clients (module-level, initialized in lifespan) ──────────────────
 
 groq_client = None
+openai_client = None
 retriever = None
 
 
@@ -30,7 +30,7 @@ retriever = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """All startup logic here — clean, structured, error-friendly."""
-    global groq_client, retriever
+    global groq_client, openai_client, retriever
 
     # 1. Database
     try:
@@ -39,16 +39,25 @@ async def lifespan(app: FastAPI):
         logger.critical(f"❌ Database init failed: {e}")
         raise
 
-    # 2. Groq Client
+    # # 2. Groq Client
+    # try:
+    #     from groq import Groq as GroqClient
+    #     groq_client = GroqClient(api_key=GROQ_API_KEY)
+    #     logger.info("✅ Groq client initialized!")
+    # except Exception as e:
+    #     logger.critical(f"❌ Groq init failed: {e}")
+    #     raise
+
+    # 3. OpenAI Client
     try:
-        from groq import Groq as GroqClient
-        groq_client = GroqClient(api_key=GROQ_API_KEY)
-        logger.info("✅ Groq client initialized!")
+        from openai import AsyncOpenAI
+        openai_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
+        logger.info("OpenAI client initialized!")
     except Exception as e:
-        logger.critical(f"❌ Groq init failed: {e}")
+        logger.critical(f"OpenAI init failed: {e}")
         raise
 
-    # 3. Embeddings + ChromaDB + Retriever
+    # 4. Embeddings + ChromaDB + Retriever
     try:
         from llama_index.core import VectorStoreIndex, Settings, SimpleDirectoryReader
         from llama_index.embeddings.jinaai import JinaEmbedding
@@ -85,6 +94,7 @@ async def lifespan(app: FastAPI):
     # Shutdown
     logger.info("🛑 E-Numerak API shutting down...")
 
+
 # ─── App ──────────────────────────────────────────────────────────────────────
 
 app = FastAPI(
@@ -102,9 +112,10 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 # ─── CORS ─────────────────────────────────────────────────────────────────────
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,  # config se aa raha hai ab
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,
@@ -131,5 +142,24 @@ def health_check():
     return {
         "status": "healthy",
         "groq": groq_client is not None,
+        "openai": openai_client is not None,
         "retriever": retriever is not None,
     }
+
+
+@app.get("/test-openai", tags=["Health"])
+async def test_openai():
+    """Quick test to verify OpenAI GPT-4o-mini is working."""
+    try:
+        response = await openai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": "Say hello in one sentence."}],
+            max_tokens=50,
+        )
+        return {
+            "status": "success",
+            "model": response.model,
+            "reply": response.choices[0].message.content,
+        }
+    except Exception as e:
+        return {"status": "error", "detail": str(e)}
