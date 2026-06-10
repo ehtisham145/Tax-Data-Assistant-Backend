@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
+from utils.config import DOCS_URL
 from utils.config import (
     GROQ_API_KEY, JINA_API_KEY,
     CHROMA_DB_PATH, ALLOWED_ORIGINS, OPENAI_API_KEY)
@@ -102,8 +103,10 @@ app = FastAPI(
     description="UAE Tax Assistant powered by E-Numerak",
     version="1.0.0",
     lifespan=lifespan,
+    docs_url=f"/docs/{DOCS_URL}" if DOCS_URL else None,
+    redoc_url=None,
+    openapi_url=f"/openapi/{DOCS_URL}.json" if DOCS_URL else None,
 )
-
 # ─── Rate Limiter ─────────────────────────────────────────────────────────────
 
 limiter = Limiter(key_func=get_remote_address)

@@ -13,6 +13,7 @@ CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "/data/chroma_db")  # ✅ Railway V
 SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", "/data/users.db")   # ✅ Railway Volume
 MAX_HISTORY = 6
 SIMILARITY_TOP_K = 3
+DOCS_URL = os.getenv("DOCS_URL")
 REDIS_URL = "redis://localhost:6379"
 ALLOWED_ORIGINS = [
     "https://e-numerak.com",
