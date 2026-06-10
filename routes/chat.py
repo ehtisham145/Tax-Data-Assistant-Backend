@@ -83,7 +83,8 @@ async def chat(
         f"5. Always be professional, polite, and supportive.\n"
         f"6. Bold important words and use bullet points where appropriate.\n"
         f"7. Address the user by their name \"{user_name}\" where appropriate.\n"
-        f"8. Respond as quickly and concisely as possible."
+        f"8. Respond as quickly and concisely as possible.\n"
+        f"9. Detect the language the user is writing in and always respond in that same language. For example, if the user writes in Arabic, respond in Arabic. If in Urdu, respond in Urdu. If in English, respond in English."
     )
 
     # 5. Stream response
