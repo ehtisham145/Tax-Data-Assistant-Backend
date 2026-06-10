@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+ADMIN_SECRET=os.getenv("ADMIN_SECRET")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL = "gpt-4o-mini"
