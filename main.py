@@ -77,7 +77,7 @@ async def lifespan(app: FastAPI):
             index = VectorStoreIndex.from_vector_store(vector_store)
             logger.info("✅ Existing ChromaDB data loaded!")
         else:
-            documents = SimpleDirectoryReader(input_files=["/data/portal_data.txt"]).load_data()
+            documents = SimpleDirectoryReader(input_files=["data/portal_data.txt"]).load_data()
             index = VectorStoreIndex.from_documents(documents, storage_context=storage_context)
             logger.info("✅ Fresh data ingested into ChromaDB!")
 
