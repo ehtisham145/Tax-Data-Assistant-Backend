@@ -5,7 +5,8 @@ from database.connections import get_db
 from fastapi import APIRouter, HTTPException,status,BackgroundTasks,Depends
 from utils.pipeline import run_update_pipeline
 from utils.config import ADMIN_SECRET
-import asyncio
+from main import reload_retriever
+
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -172,9 +173,29 @@ def api_delete_user(session_id: str, secret: str):
     
 
 # ─── Refresh Data Endpoint ────────────────────────────────────────────────────
+
+async def run_update_pipeline_wrapper():
+    """Wrapper function jo pipeline chalayegi aur uska result end me log karegi."""
+    try:
+        result = await run_update_pipeline()
+        logger.info(f"📊 Background Pipeline Finished. Result: {result}")
+
+        # ─── Reload retriever after fresh data ingested ───────────────────
+        if result["status"] == "updated":
+            reloaded = await reload_retriever()
+            if reloaded:
+                logger.info("✅ Retriever reloaded with fresh ChromaDB data!")
+            else:
+                logger.error("❌ Retriever reload failed — restart app manually!")
+
+    except Exception as e:
+        logger.critical(f"💥 Background Pipeline crashed unexpectedly: {e}", exc_info=True)
+
+
+# ─── Refresh Data Endpoint ────────────────────────────────────────────────────
 @router.post("/refresh-data", status_code=status.HTTP_202_ACCEPTED)
 async def refresh_training_data(
-    background_tasks: BackgroundTasks, 
+    background_tasks: BackgroundTasks,
     _=Depends(verify_admin)
 ):
     """
@@ -183,19 +204,9 @@ async def refresh_training_data(
     """
     logger.info("🎬 Admin verified successfully. Triggering data refresh pipeline...")
 
-    # 🚀 Production Pattern: Pipeline ko background me daal diya taake HTTP timeout na ho
     background_tasks.add_task(run_update_pipeline_wrapper)
 
     return {
         "status": "accepted",
         "message": "Data refresh pipeline has been triggered in the background. Check logs for progress."
     }
-
-
-async def run_update_pipeline_wrapper():
-    """Wrapper function jo pipeline chalayegi aur uska result end me log karegi."""
-    try:
-        result = await run_update_pipeline()
-        logger.info(f"📊 Background Pipeline Finished. Result: {result}")
-    except Exception as e:
-        logger.critical(f"💥 Background Pipeline crashed unexpectedly: {e}", exc_info=True)

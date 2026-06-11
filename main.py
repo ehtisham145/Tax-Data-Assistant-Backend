@@ -19,15 +19,39 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ─── Global Clients (module-level, initialized in lifespan) ──────────────────
-
+# ─── Global Clients ───────────────────────────────────────────────────────────
 groq_client = None
 openai_client = None
 retriever = None
 
 
-# ─── Lifespan — Startup & Shutdown ───────────────────────────────────────────
+# ─── Retriever Reload Function ────────────────────────────────────────────────
+async def reload_retriever():
+    """Reload retriever after pipeline updates ChromaDB."""
+    global retriever
+    try:
+        from llama_index.core import VectorStoreIndex, Settings
+        from llama_index.embeddings.jinaai import JinaEmbedding
+        from llama_index.vector_stores.chroma import ChromaVectorStore
+        import chromadb
 
+        embed_model = JinaEmbedding(api_key=JINA_API_KEY)
+        Settings.embed_model = embed_model
+
+        chroma_client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
+        chroma_collection = chroma_client.get_or_create_collection("tax_data")
+        vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+
+        index = VectorStoreIndex.from_vector_store(vector_store)
+        retriever = index.as_retriever(similarity_top_k=3)
+        logger.info("✅ Retriever reloaded successfully!")
+        return True
+    except Exception as e:
+        logger.error(f"❌ Retriever reload failed: {e}")
+        return False
+
+
+# ─── Lifespan — Startup & Shutdown ───────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """All startup logic here — clean, structured, error-friendly."""
@@ -40,25 +64,16 @@ async def lifespan(app: FastAPI):
         logger.critical(f"❌ Database init failed: {e}")
         raise
 
-    # # 2. Groq Client
-    # try:
-    #     from groq import Groq as GroqClient
-    #     groq_client = GroqClient(api_key=GROQ_API_KEY)
-    #     logger.info("✅ Groq client initialized!")
-    # except Exception as e:
-    #     logger.critical(f"❌ Groq init failed: {e}")
-    #     raise
-
-    # 3. OpenAI Client
+    # 2. OpenAI Client
     try:
         from openai import AsyncOpenAI
         openai_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
-        logger.info("OpenAI client initialized!")
+        logger.info("✅ OpenAI client initialized!")
     except Exception as e:
-        logger.critical(f"OpenAI init failed: {e}")
+        logger.critical(f"❌ OpenAI init failed: {e}")
         raise
 
-    # 4. Embeddings + ChromaDB + Retriever
+    # 3. Embeddings + ChromaDB + Retriever
     try:
         from llama_index.core import VectorStoreIndex, Settings, SimpleDirectoryReader
         from llama_index.embeddings.jinaai import JinaEmbedding
@@ -90,14 +105,13 @@ async def lifespan(app: FastAPI):
         raise
 
     logger.info("🚀 E-Numerak API startup complete!")
-    yield  # ← Server yahan chalta hai
+    yield
 
     # Shutdown
     logger.info("🛑 E-Numerak API shutting down...")
 
 
 # ─── App ──────────────────────────────────────────────────────────────────────
-
 app = FastAPI(
     title="E-Numerak Tax Chatbot API",
     description="UAE Tax Assistant powered by E-Numerak",
@@ -107,15 +121,13 @@ app = FastAPI(
     redoc_url=None,
     openapi_url=f"/openapi/{DOCS_URL}.json" if DOCS_URL else None,
 )
-# ─── Rate Limiter ─────────────────────────────────────────────────────────────
 
+# ─── Rate Limiter ─────────────────────────────────────────────────────────────
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-
 # ─── CORS ─────────────────────────────────────────────────────────────────────
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
@@ -125,7 +137,6 @@ app.add_middleware(
 )
 
 # ─── Routers ──────────────────────────────────────────────────────────────────
-
 from routes.auth import router as auth_router
 from routes.chat import router as chat_router
 from routes.admin import router as admin_router
@@ -133,8 +144,8 @@ from routes.admin import router as admin_router
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(chat_router, prefix="/chat", tags=["Chat"])
 app.include_router(admin_router, prefix="/admin", tags=["Admin"])
-# ─── Endpoints ────────────────────────────────────────────────────────────────
 
+# ─── Endpoints ────────────────────────────────────────────────────────────────
 @app.get("/", tags=["Health"])
 def root():
     return {"status": "E-Numerak Tax Chatbot API is running!"}
@@ -142,7 +153,6 @@ def root():
 
 @app.get("/health", tags=["Health"])
 def health_check():
-    """Deployment health check — Railway/Render is use karta hai."""
     return {
         "status": "healthy",
         "groq": groq_client is not None,
@@ -153,7 +163,6 @@ def health_check():
 
 @app.get("/test-openai", tags=["Health"])
 async def test_openai():
-    """Quick test to verify OpenAI GPT-4o-mini is working."""
     try:
         response = await openai_client.chat.completions.create(
             model="gpt-4o-mini",
