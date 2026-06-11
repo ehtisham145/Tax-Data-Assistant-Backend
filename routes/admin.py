@@ -2,8 +2,10 @@ import sqlite3
 import logging
 from typing import Optional
 from database.connections import get_db
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException,status,BackgroundTasks,Depends
+from utils.pipeline import run_update_pipeline
 from utils.config import ADMIN_SECRET
+import asyncio
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -167,3 +169,33 @@ def api_delete_user(session_id: str, secret: str):
         return {"status": "✅ User deleted!", "session_id": session_id}
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+# ─── Refresh Data Endpoint ────────────────────────────────────────────────────
+@router.post("/refresh-data", status_code=status.HTTP_202_ACCEPTED)
+async def refresh_training_data(
+    background_tasks: BackgroundTasks, 
+    _=Depends(verify_admin)
+):
+    """
+    Trigger the auto-update pipeline safely in the background.
+    Returns 202 Accepted immediately so the request doesn't timeout.
+    """
+    logger.info("🎬 Admin verified successfully. Triggering data refresh pipeline...")
+
+    # 🚀 Production Pattern: Pipeline ko background me daal diya taake HTTP timeout na ho
+    background_tasks.add_task(run_update_pipeline_wrapper)
+
+    return {
+        "status": "accepted",
+        "message": "Data refresh pipeline has been triggered in the background. Check logs for progress."
+    }
+
+
+async def run_update_pipeline_wrapper():
+    """Wrapper function jo pipeline chalayegi aur uska result end me log karegi."""
+    try:
+        result = await run_update_pipeline()
+        logger.info(f"📊 Background Pipeline Finished. Result: {result}")
+    except Exception as e:
+        logger.critical(f"💥 Background Pipeline crashed unexpectedly: {e}", exc_info=True)
