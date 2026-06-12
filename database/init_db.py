@@ -29,13 +29,12 @@ def init_db():
                 
                 CREATE TABLE IF NOT EXISTS feedback (
                     id           INTEGER PRIMARY KEY AUTOINCREMENT,
-                    session_id   TEXT NOT NULL,
+                    session_id   TEXT,  -- NOT NULL hata diya, FK bhi hata diya
                     user_message TEXT NOT NULL,
                     bot_response TEXT NOT NULL,
                     rating       TEXT NOT NULL CHECK(rating IN ('thumbs_up', 'thumbs_down')),
-                    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (session_id) REFERENCES users(session_id) ON DELETE CASCADE
-                );
+                    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
 
                    -- Performance indexes
                 CREATE INDEX IF NOT EXISTS idx_users_email
