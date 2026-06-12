@@ -1,12 +1,14 @@
 from pydantic import BaseModel, Field
-from typing import Literal
-from typing import List
+from typing import Literal, List, Optional
+
 
 class FeedbackRequest(BaseModel):
     session_id: str = Field(..., max_length=100, examples=["session_abc123"])
-    user_message: str = Field(..., max_length=2000) # Limit text to 2000 chars
-    bot_response: str = Field(..., max_length=4000) # Limit bot response 
-    rating: Literal['thumbs_up', 'thumbs_down']    # Sirf yahi do values allowed hain
+    user_message: str = Field(..., max_length=2000)
+    bot_response: str = Field(..., max_length=4000)
+    rating: Literal['thumbs_up', 'thumbs_down']
+    created_at: Optional[str] = None  # ← add this
+
 
 class FeedbackPaginatedResponse(BaseModel):
     total: int = Field(..., description="Total number of feedback entries available")
