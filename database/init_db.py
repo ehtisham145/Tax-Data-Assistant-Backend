@@ -1,9 +1,7 @@
 from database.connections import get_db
 import logging
-logger=logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 import sqlite3
-
-# ─── Init ────────────────────────────────────────────────────────────────────
 
 def init_db():
     """Create tables and indexes if they don't exist."""
@@ -11,11 +9,11 @@ def init_db():
         with get_db() as conn:
             conn.executescript("""
                 CREATE TABLE IF NOT EXISTS users (
-                session_id TEXT PRIMARY KEY,
-                name       TEXT NOT NULL,
-                email      TEXT UNIQUE NOT NULL,
-                is_admin   INTEGER DEFAULT 0,    -- 0 = normal, 1 = admin
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    session_id TEXT PRIMARY KEY,
+                    name       TEXT NOT NULL,
+                    email      TEXT UNIQUE NOT NULL,
+                    is_admin   INTEGER DEFAULT 0,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
 
                 CREATE TABLE IF NOT EXISTS conversations (
@@ -26,17 +24,16 @@ def init_db():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (session_id) REFERENCES users(session_id) ON DELETE CASCADE
                 );
-                
+
                 CREATE TABLE IF NOT EXISTS feedback (
                     id           INTEGER PRIMARY KEY AUTOINCREMENT,
-                    session_id   TEXT,  -- NOT NULL hata diya, FK bhi hata diya
+                    session_id   TEXT,
                     user_message TEXT NOT NULL,
                     bot_response TEXT NOT NULL,
                     rating       TEXT NOT NULL CHECK(rating IN ('thumbs_up', 'thumbs_down')),
                     created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+                );
 
-                   -- Performance indexes
                 CREATE INDEX IF NOT EXISTS idx_users_email
                     ON users(email);
 
@@ -52,5 +49,4 @@ def init_db():
         logger.info("✅ Database initialized successfully!")
     except sqlite3.Error as e:
         logger.error(f"❌ Database initialization failed: {e}")
-        raise
-
+        raise~
