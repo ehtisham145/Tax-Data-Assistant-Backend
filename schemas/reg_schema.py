@@ -1,9 +1,9 @@
-from pydantic import BaseModel,EmailStr,field_validator
+from pydantic import BaseModel,EmailStr,field_validator,Field
 from typing import List
 
 #--------------------------Register Schema---------------------------------
 class RegisterRequest(BaseModel):
-    name: str
+    name: str = Field(..., max_length=70)
     email: EmailStr  # Validates email format automatically
     session_id: str
 

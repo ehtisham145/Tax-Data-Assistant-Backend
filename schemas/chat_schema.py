@@ -1,9 +1,10 @@
-from pydantic import BaseModel,field_validator,EmailStr
+from pydantic import BaseModel,field_validator,EmailStr,Field
 MAX_MESSAGE_LENGTH = 1000 
+
 # ─── Request Model ────────────────────────────────────────────────────────────
 
 class ChatRequest(BaseModel):
-    message: str
+    message: str = Field(..., max_length=2000)
     session_id: str
     email: EmailStr
 

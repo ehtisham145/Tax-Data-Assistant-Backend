@@ -26,13 +26,29 @@ def init_db():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (session_id) REFERENCES users(session_id) ON DELETE CASCADE
                 );
+                
+                CREATE TABLE IF NOT EXISTS feedback (
+                    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+                    session_id   TEXT NOT NULL,
+                    user_message TEXT NOT NULL,
+                    bot_response TEXT NOT NULL,
+                    rating       TEXT NOT NULL CHECK(rating IN ('thumbs_up', 'thumbs_down')),
+                    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (session_id) REFERENCES users(session_id) ON DELETE CASCADE
+                );
 
-                -- Performance indexes
+                   -- Performance indexes
                 CREATE INDEX IF NOT EXISTS idx_users_email
                     ON users(email);
 
                 CREATE INDEX IF NOT EXISTS idx_conversations_session_created
                     ON conversations(session_id, created_at);
+
+                CREATE INDEX IF NOT EXISTS idx_feedback_session
+                    ON feedback(session_id);
+
+                CREATE INDEX IF NOT EXISTS idx_feedback_rating
+                    ON feedback(rating);
             """)
         logger.info("✅ Database initialized successfully!")
     except sqlite3.Error as e:

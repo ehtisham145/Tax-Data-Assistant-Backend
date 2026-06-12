@@ -8,7 +8,10 @@ from database.users import get_user_by_email, get_user_by_session
 from utils.config import OPENAI_MODEL, MAX_HISTORY
 from utils.helpers import get_openai_client, get_retriever
 from schemas.chat_schema import ChatRequest
+from schemas.feedback_schema import FeedbackRequest
+from database.feedback import save_feedback
 import logging
+
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -169,3 +172,33 @@ async def get_history(session_id: str):
             for h in history
         ],
     }
+
+# ─── Feedback ─────────────────────────────────────────────────────────────────
+
+@router.post("/feedback")
+async def submit_feedback(body: FeedbackRequest):
+    """Save user feedback for a bot response."""
+    try:
+        success = await run_in_threadpool(
+            save_feedback,
+            body.session_id,
+            body.user_message,
+            body.bot_response,
+            body.rating,
+        )
+
+        if not success:
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to save feedback."
+            )
+
+        return {
+            "status": "success",
+            "message": "Feedback saved successfully!",
+            "rating": body.rating
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Feedback error: {e}")
+        raise HTTPException(status_code=500, detail="Could not save feedback.")

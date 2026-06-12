@@ -6,88 +6,16 @@ from fastapi import APIRouter, HTTPException,status,BackgroundTasks,Depends
 from utils.pipeline import run_update_pipeline
 from utils.config import ADMIN_SECRET
 from main import reload_retriever
-
+from schemas.feedback_schema import FeedbackPaginatedResponse,FeedbackStatsResponse
+from fastapi import Query
+from starlette.concurrency import run_in_threadpool
+from utils.helpers import verify_admin
+from database.users import get_all_users,get_user_by_session,get_user_by_email
+from database.conversations import get_conversation_history,delete_conversation
+from database.feedback import get_all_feedback,get_feedback_stats
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
-
-
-# ─── Admin Auth Helper ────────────────────────────────────────────────────────
-
-def verify_admin(secret: str):
-    """Check admin secret — raise 403 if wrong."""
-    if secret != ADMIN_SECRET:
-        raise HTTPException(status_code=403, detail="❌ Not allowed! Admin only.")
-
-
-# ─── DB Helper Functions ──────────────────────────────────────────────────────
-
-def get_user_by_session(session_id: str) -> Optional[tuple]:
-    try:
-        with get_db() as conn:
-            row = conn.execute(
-                "SELECT name, email FROM users WHERE session_id = ?",
-                (session_id,),
-            ).fetchone()
-            return tuple(row) if row else None
-    except sqlite3.Error as e:
-        logger.error(f"❌ Error fetching user by session [{session_id}]: {e}")
-        raise
-
-
-def get_user_by_email(email: str) -> Optional[tuple]:
-    try:
-        with get_db() as conn:
-            row = conn.execute(
-                "SELECT name, email FROM users WHERE email = ?", (email,)
-            ).fetchone()
-            return tuple(row) if row else None
-    except sqlite3.Error as e:
-        logger.error(f"❌ Error fetching user by email [{email}]: {e}")
-        return None
-
-
-def get_all_users() -> list:
-    try:
-        with get_db() as conn:
-            rows = conn.execute(
-                "SELECT session_id, name, email, created_at FROM users ORDER BY created_at DESC"
-            ).fetchall()
-            return [tuple(r) for r in rows]
-    except sqlite3.Error as e:
-        logger.error(f"❌ Error fetching all users: {e}")
-        raise
-
-
-def get_conversation_history(session_id: str) -> list:
-    try:
-        with get_db() as conn:
-            rows = conn.execute(
-                """
-                SELECT role, message, created_at
-                FROM conversations
-                WHERE session_id = ?
-                ORDER BY created_at ASC
-                """,
-                (session_id,),
-            ).fetchall()
-            return [tuple(r) for r in rows]
-    except sqlite3.Error as e:
-        logger.error(f"❌ Error fetching history [{session_id}]: {e}")
-        raise
-
-
-def delete_conversation(session_id: str) -> None:
-    try:
-        with get_db() as conn:
-            conn.execute(
-                "DELETE FROM conversations WHERE session_id = ?",
-                (session_id,),
-            )
-        logger.info(f"✅ Conversation deleted for session: {session_id}")
-    except sqlite3.Error as e:
-        logger.error(f"❌ Error deleting conversation [{session_id}]: {e}")
-        raise
 
 
 # ─── Admin API Endpoints ──────────────────────────────────────────────────────
@@ -210,3 +138,80 @@ async def refresh_training_data(
         "status": "accepted",
         "message": "Data refresh pipeline has been triggered in the background. Check logs for progress."
     }
+
+# ─── Endpoints ───────────────────────────────────────────────────────────────
+
+@router.get(
+    "/feedback",
+    response_model=FeedbackPaginatedResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Get paginated user feedback",
+)
+async def view_all_feedback(
+    page: int = Query(1, ge=1, description="Page number to retrieve"),
+    limit: int = Query(50, ge=1, le=100, description="Number of items per page"),
+    _=Depends(verify_admin)
+):
+    """
+    Fetch user feedback with pagination to protect server performance.
+    
+    - **page**: Current page (Starts at 1)
+    - **limit**: Items per page (Max 100)
+    """
+    try:
+        # Note: You should update your underlying `get_all_feedback` function 
+        # to accept limit and offset parameters for standard SQL pagination (LIMIT/OFFSET).
+        offset = (page - 1) * limit
+        
+        # Simulating passing pagination parameters down to the threadpool function
+        feedback_records, total_count = await run_in_threadpool(get_all_feedback, limit=limit, offset=offset)
+        
+        return {
+            "total": total_count,
+            "page": page,
+            "limit": limit,
+            "feedback": [
+                {
+                    "session_id": f[0],
+                    "user_message": f[1],
+                    "bot_response": f[2],
+                    "rating": f[3],
+                    "created_at": f[4],
+                }
+                for f in feedback_records
+            ],
+        }
+    except Exception as e:
+        logger.error(f"❌ Error fetching feedback: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail="An error occurred while fetching feedback records."
+        )
+
+
+@router.get(
+    "/feedback/stats",
+    response_model=FeedbackStatsResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Get feedback metrics",
+)
+async def view_feedback_stats(_=Depends(verify_admin)):
+    """
+    Retrieve aggregated metrics for thumbs up and thumbs down counts.
+    """
+    try:
+        stats = await run_in_threadpool(get_feedback_stats)
+        
+        # Defensive check against None or missing keys from the database function
+        return {
+            "total": stats.get("total", 0),
+            "thumbs_up": stats.get("thumbs_up", 0),
+            "thumbs_down": stats.get("thumbs_down", 0),
+        }
+    except Exception as e:
+        logger.error(f"❌ Error fetching feedback stats: {e}", exc_info=True)
+        print(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail="An error occurred while aggregating feedback statistics."
+        )
