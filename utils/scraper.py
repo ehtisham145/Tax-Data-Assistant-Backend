@@ -5,7 +5,9 @@ import asyncio
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger=logging.getLogger(__name__)
+import os
 
+PORTAL_DATA_PATH = "data/portal_data.txt"
 # ─── Pages to scrape ─────────────────────────────────────────────────────────
 URLS = [
     "https://e-numerak.com/",
@@ -63,6 +65,17 @@ async def fetch_and_parse(client: httpx.AsyncClient, url: str)->str:
 
     return "" # If fail return nothig
 
+def load_portal_data() -> str:
+    """Load static portal_data.txt content."""
+    try:
+        with open(PORTAL_DATA_PATH, "r", encoding="utf-8") as f:
+            content = f.read()
+        logger.info("✅ portal_data.txt loaded successfully.")
+        return content
+    except FileNotFoundError:
+        logger.warning("⚠️ portal_data.txt not found — skipping.")
+        return ""
+
 async def scrap_website()->str:
     """Scrap Every Single Pages Fastly"""
     limits=httpx.Limits(max_keepalive_connections=5,max_connections=10)
@@ -80,8 +93,13 @@ async def scrap_website()->str:
 
         #Just Getting the cleaned from the result and removing null values
         clean_results = [r for r in results if r]
-    
-    return "\n\n".join(clean_results)
+        scraped_text = "\n\n".join(clean_results)
+        portal_text = load_portal_data()
+
+    final_text = scraped_text + "\n\n=== HELP & GUIDE ===\n\n" + portal_text
+
+    logger.info(f"📄 Total characters ready for ingestion: {len(final_text)}")
+    return final_text
 
 
 

@@ -206,4 +206,3 @@ Answer: The cardinality rule governs field logic, explicitly defining how often 
 
 0..n: The field is optional and can be repeated multiple times (such as adding multiple line items or tax tiers).
 
-.\.venv\Scripts\Activate.ps1
