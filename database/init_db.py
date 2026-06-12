@@ -49,4 +49,6 @@ def init_db():
         logger.info("✅ Database initialized successfully!")
     except sqlite3.Error as e:
         logger.error(f"❌ Database initialization failed: {e}")
-        raise~
+        raise
+
+    
