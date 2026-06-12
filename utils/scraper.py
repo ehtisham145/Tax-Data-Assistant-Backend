@@ -103,15 +103,14 @@ async def scrap_website()->str:
 
 
 
-# if __name__ == "__main__":
-#     async def test():
-#         print("🚀 Starting scraper test...")
-#         result = await scrap_website()
-#         print(f"✅ Total characters scraped: {len(result)}")
-#         print("\n--- First 500 characters preview ---")
-#         print(result)
+if __name__ == "__main__":
+    async def test():
+        print("🚀 Starting scraper test...")
+        result = await scrap_website()
+        print(f"✅ Total characters scraped: {len(result)}")
+        print(result)
 
-#     asyncio.run(test())
+    asyncio.run(test())
          
 
          

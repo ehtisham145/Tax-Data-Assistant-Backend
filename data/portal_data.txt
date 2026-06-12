@@ -1,11 +1,15 @@
-Q1:How do I create an invoice?
+Q1: How do I create an invoice?
 
-Go to Invoices → New Invoice. 
-Fill in the 6 steps: Invoice Details, Supplier, Buyer, Items, Payment, 
-then Submit. Your invoice is assigned a unique number and submitted 
+Go to Invoices → New Invoice.
+Fill in the 6 steps: Invoice Details, Supplier, Buyer, Items, Payment,
+then Submit. Your invoice is assigned a unique number and submitted
 to the ASP automatically.
 
-Q2:What invoice types are supported?
+VARIANTS: How can I generate a new invoice? | What are the steps to make an invoice? | Walk me through creating an invoice. | Where do I go to create an invoice?
+
+---
+
+Q2: What invoice types are supported?
 
 The platform supports:
 • Tax Invoice (380)
@@ -14,6 +18,10 @@ The platform supports:
 • Continuous Supply Invoice (875)
 
 All per the UAE PINT / PEPPOL BIS 3.0 standard.
+
+VARIANTS: Which types of invoices can I create? | What kinds of invoices does E-Numerak handle? | Can I issue credit notes and commercial invoices? | What invoice formats are available?
+
+---
 
 Q3: What do the invoice statuses mean?
 
@@ -25,184 +33,298 @@ Rejected → FTA found errors; check rejection reason.
 Cancelled → voided.
 Paid → payment received.
 
+VARIANTS: What does each invoice status indicate? | What is the difference between Submitted and Validated? | What happens when an invoice is rejected? | Explain the invoice lifecycle statuses.
+
+---
+
 Q4: How do I download the UBL XML?
 
-Open the invoice detail page. Once 
-status is Submitted or Validated, a "Download XML" button appears.
- Click it to download the PEPPOL UBL 2.1 XML file.
+Open the invoice detail page. Once status is Submitted or Validated, a "Download XML" button appears.
+Click it to download the PEPPOL UBL 2.1 XML file.
 
-Q5:How do I issue a credit note?
+VARIANTS: Where can I get the XML for my invoice? | How do I export my invoice as XML? | Can I download the UBL file from the platform? | What steps do I follow to download the invoice XML?
 
-Create a new invoice and select type "Credit Note (381)". 
-Enter the original invoice number in the Reference Number field. Credit notes reverse a 
+---
+
+Q5: How do I issue a credit note?
+
+Create a new invoice and select type "Credit Note (381)".
+Enter the original invoice number in the Reference Number field. Credit notes reverse a
 previously issued tax invoice for returns, cancellations, or corrections.
 
-Q6:What VAT rates are available?
+VARIANTS: How can I reverse a tax invoice? | What is the process for creating a credit note? | How do I cancel or correct an invoice using a credit note? | Steps to issue a credit note on E-Numerak?
+
+---
+
+Q6: What VAT rates are available?
 
 Standard: 5% — applies to most goods & services.
 Zero-rated: 0% — exports, international transport, certain food items.
 Exempt: no VAT — financial services, residential property.
 
-Q7:What is a TRN?
+VARIANTS: What are the UAE VAT rate options? | Which VAT categories does the platform support? | What is the VAT rate for exports? | Does E-Numerak support zero-rated and exempt VAT?
 
-TRN (Tax Registration Number) is a 15-digit number issued by the UAE 
-Federal Tax Authority. It is required
- on every B2B tax invoice for both the seller and buyer.
+---
 
-Q8:What is PEPPOL / UAE PINT?
+Q7: What is a TRN?
+
+TRN (Tax Registration Number) is a 15-digit number issued by the UAE
+Federal Tax Authority. It is required on every B2B tax invoice for both the seller and buyer.
+
+VARIANTS: What does TRN stand for? | Why is a TRN required on invoices? | How many digits is a UAE TRN? | Where do I find my TRN for invoicing?
+
+---
+
+Q8: What is PEPPOL / UAE PINT?
 
 PEPPOL (Pan-European Public Procurement On-Line) is a global e-invoicing network.
 UAE PINT is the UAE national profile based on PEPPOL BIS 3.0
 and UBL 2.1, mandated by the UAE FTA for e-invoicing compliance.
 
+VARIANTS: What does PEPPOL mean in UAE e-invoicing? | What is UAE PINT? | How does PEPPOL relate to UAE invoicing rules? | Is BIS 3.0 required for UAE e-invoices?
+
+---
 
 Q9: How do I add a company?
 
-Go to Settings → Companies → Add Company. Enter the company name, TRN, address, and contact details. 
+Go to Settings → Companies → Add Company. Enter the company name, TRN, address, and contact details.
 You must have at least one active company to create invoices.
+
+VARIANTS: How can I register a new company on the platform? | Where do I set up my company in E-Numerak? | Can I add multiple companies to my account? | What information do I need to add a company?
+
+---
 
 Q10: How do I add a customer?
 
 Go to Customers → Add Customer. Fill in the buyer name, TRN (required for B2B),
- address, and contact. Once saved, 
+address, and contact. Once saved,
 the customer appears in the Buyer picker when creating invoices.
+
+VARIANTS: How do I create a new buyer on E-Numerak? | Where can I add customer details? | How do I save a client for use in invoices? | What details are needed to add a customer?
+
+---
 
 Q11: How do I set up two-factor authentication?
 
-Go to Account → Security → Enable MFA. Scan the QR code 
+Go to Account → Security → Enable MFA. Scan the QR code
 with an authenticator app (e.g. Google Authenticator).
- Enter the 6-digit code to confirm. MFA adds a secure second login step.
+Enter the 6-digit code to confirm. MFA adds a secure second login step.
 
-Q12:What user roles exist?
+VARIANTS: How do I set up 2FA on my account? | How can I make my account more secure? | Where is the MFA setting in E-Numerak? | Does E-Numerak support Google Authenticator?
+
+---
+
+Q12: What user roles exist?
 
 Admin: full access — manage company, users, and all invoices.
 Accountant: create and manage invoices.
 Viewer: read-only access to invoices.
 Inbound Supplier: accesses the supplier portal only.
 
+VARIANTS: What are the different permission levels on E-Numerak? | Can I restrict what team members can do? | What is the difference between Admin and Accountant roles? | Does E-Numerak support role-based access control?
+
+---
+
 Q13: Is this platform FTA certified?
 
-Yes. E-Numerak is FTA-certified and fully compliant with 
-Federal Decree-Law No. 16 of 2024. It generates PEPPOL BIS 3.0 / 
+Yes. E-Numerak is FTA-certified and fully compliant with
+Federal Decree-Law No. 16 of 2024. It generates PEPPOL BIS 3.0 /
 UBL 2.1 e-invoices and submits them to the Accredited Service Provider (ASP).
+
+VARIANTS: Does E-Numerak have FTA certification? | Is this platform approved by the UAE Federal Tax Authority? | Has E-Numerak been certified for UAE tax compliance? | Is E-Numerak officially recognized by the FTA?
+
+---
 
 Q14: How can I get started?
 
 Sign up at the E-Invoice Portal, register your company TRN, add your
- customers, and create your 
-first invoice. Our onboarding wizard guides you through each step.
+customers, and create your first invoice. Our onboarding wizard guides you through each step.
 
-Here is the structured set of 15 essential Questions and Answers (Q&As) derived directly from your data. This dataset is perfectly formatted for injection into your RAG-based chatbot's knowledge base or vector database.
+VARIANTS: How do I create an account on E-Numerak? | What is the onboarding process for E-Numerak? | Where do I sign up for E-Numerak? | How quickly can I start issuing invoices on the platform?
 
-1. General & System Overview
-Question: What is the primary objective of the UAE's new e-invoicing system?
+---
 
-Answer: The UAE Ministry of Finance launched the e-invoicing system to make financial transactions more transparent, reliable, and fully compliant with VAT regulations. It aims to standardize business processes and reduce reporting errors or tax fraud.
+Q15: What is the primary objective of the UAE's new e-invoicing system?
 
-Question: How does the e-invoicing system operate in the UAE, and what is the role of ASPs?
+The UAE Ministry of Finance launched the e-invoicing system to make financial transactions more transparent, reliable, and fully compliant with VAT regulations. It aims to standardize business processes and reduce reporting errors or tax fraud.
 
-Answer: The UAE uses a Decentralized Continuous Transaction Controls and Exchange (DCTCE) model. Accredited Service Providers (ASPs) act as trusted intermediaries that validate, send, and receive invoices in near real-time between buyers, sellers, and the Federal Tax Authority.
+VARIANTS: Why did the UAE introduce e-invoicing? | What problem does UAE e-invoicing solve? | What is the goal of the UAE FTA e-invoice mandate? | Why is e-invoicing being made mandatory in the UAE?
 
-Question: What is the PINT AE specification and which network does it utilize?
+---
 
-Answer: The PINT AE specification is a globally recognized framework based on the Peppol network. It defines the specific technical format and rules for creating, exchanging, and validating digital invoices within the UAE and internationally.
+Q16: How does the e-invoicing system operate in the UAE, and what is the role of ASPs?
 
-2. Format & Technical Structure
-Question: What is the mandatory file format for a UAE Standard e-Invoice? Can businesses use PDFs?
+The UAE uses a Decentralized Continuous Transaction Controls and Exchange (DCTCE) model. Accredited Service Providers (ASPs) act as trusted intermediaries that validate, send, and receive invoices in near real-time between buyers, sellers, and the Federal Tax Authority.
 
-Answer: All e-invoices must be generated in XML format to ensure they are machine-readable and capable of being processed by automated systems. While businesses may retain a PDF version for internal records, only the XML file is legally valid for official submission.
+VARIANTS: What is the DCTCE model in UAE e-invoicing? | What do Accredited Service Providers do? | How are invoices transmitted to the FTA? | What is the role of an ASP in the UAE e-invoice process?
 
-Question: What is the rule regarding the SpecificationID (IBT-024) in the invoice schema?
+---
 
-Answer: The SpecificationID proves that the invoice adheres strictly to PINT AE rules. It must always begin with the exact string urn:peppol:pint:billing-1@ae-1; otherwise, the invoice will fail system validation and be rejected.
+Q17: What is the PINT AE specification and which network does it utilize?
 
-Question: Which standard international codes and formats must be used in a UAE e-invoice?
+The PINT AE specification is a globally recognized framework based on the Peppol network. It defines the specific technical format and rules for creating, exchanging, and validating digital invoices within the UAE and internationally.
 
-Answer: Invoices must strictly follow these international standards:
+VARIANTS: What does PINT AE mean? | Which network does PINT AE use? | What is the technical standard for UAE e-invoices? | How does PINT AE relate to Peppol?
 
-Currencies: ISO 4217 standard codes (e.g., AED, USD).
+---
 
-Countries: ISO 3166-1 Alpha-2 standard codes (e.g., AE, SA).
+Q18: What is the mandatory file format for a UAE Standard e-Invoice? Can businesses use PDFs?
 
-Units of Measure: UNECE Recommendation 20 (e.g., pieces, litres).
+All e-invoices must be generated in XML format to ensure they are machine-readable and capable of being processed by automated systems. While businesses may retain a PDF version for internal records, only the XML file is legally valid for official submission.
 
-Dates: Formatted strictly as YYYY-MM-DD.
+VARIANTS: Can I submit a PDF invoice to the FTA? | What format must UAE e-invoices be in? | Is XML required for UAE e-invoicing? | Is a PDF invoice acceptable for FTA compliance?
 
-Amounts: Plain numbers with decimals (e.g., 50.00) without text or symbols.
+---
 
-3. Invoice Header & Party Details
-Question: What standard fields and identifiers are required in the Invoice Header section?
+Q19: What is the rule regarding the SpecificationID (IBT-024) in the invoice schema?
 
-Answer: The invoice header must contain general identification details, including:
+The SpecificationID proves that the invoice adheres strictly to PINT AE rules. It must always begin with the exact string urn:peppol:pint:billing-1@ae-1; otherwise, the invoice will fail system validation and be rejected.
 
-IBT-001: Unique sequential Invoice Number.
+VARIANTS: What value should IBT-024 have in a UAE invoice? | What happens if the SpecificationID is wrong? | What is the required PINT AE SpecificationID format? | Why is the SpecificationID important in UAE e-invoicing?
 
-IBT-002: Invoice Issue Date.
+---
 
-IBT-003: Invoice Type Code (identifying it as a tax invoice, credit note, or debit note).
+Q20: Which standard international codes and formats must be used in a UAE e-invoice?
 
-IBT-005: Currency Code.
+Invoices must strictly follow these international standards:
+- Currencies: ISO 4217 standard codes (e.g., AED, USD).
+- Countries: ISO 3166-1 Alpha-2 standard codes (e.g., AE, SA).
+- Units of Measure: UNECE Recommendation 20 (e.g., pieces, litres).
+- Dates: Formatted strictly as YYYY-MM-DD.
+- Amounts: Plain numbers with decimals (e.g., 50.00) without text or symbols.
 
-Question: What specific PINT AE codes are used to identify the buyer and seller?
+VARIANTS: What currency codes are used in UAE e-invoices? | How should dates be formatted in a UAE invoice? | What unit of measure standard applies to UAE e-invoicing? | Which ISO standards apply to UAE e-invoices?
 
-Answer: The buyer and seller identities are validated using the following codes:
+---
 
-IBT-027 / IBT-044: Seller Name and Buyer Name.
+Q21: What standard fields and identifiers are required in the Invoice Header section?
 
-IBT-031 / IBT-048: Tax Registration Numbers (TRNs) for VAT compliance.
+The invoice header must contain general identification details, including:
+- IBT-001: Unique sequential Invoice Number.
+- IBT-002: Invoice Issue Date.
+- IBT-003: Invoice Type Code (tax invoice, credit note, or debit note).
+- IBT-005: Currency Code.
 
-IBT-034 / IBT-049: Electronic Addresses (endpoints for delivery).
+VARIANTS: What is required in the invoice header? | Which IBT fields are mandatory in the header? | What does the invoice header need to include? | What are the compulsory header fields in a UAE e-invoice?
 
-IBG-05 / IBG-08: Postal Address Groups (including specific Emirates codes like DXB or AUH).
+---
 
-4. Mandatory, Optional & Conditional Fields
-Question: What are "Mandatory Fields" in a UAE e-invoice, and what happens if one is missing?
+Q22: What specific PINT AE codes are used to identify the buyer and seller?
 
-Answer: Mandatory fields are non-negotiable details required for an invoice to legally exist. If any mandatory field—such as the Invoice Number (IBT-001), Issue Date (IBT-002), TRNs (IBT-031/048), Taxable Amount (IBT-116), VAT Amount (IBT-117), or Grand Total (IBT-112)—is missing, the invoice fails validation and cannot be exchanged.
+The buyer and seller identities are validated using the following codes:
+- IBT-027 / IBT-044: Seller Name and Buyer Name.
+- IBT-031 / IBT-048: Tax Registration Numbers (TRNs) for VAT compliance.
+- IBT-034 / IBT-049: Electronic Addresses (endpoints for delivery).
+- IBG-05 / IBG-08: Postal Address Groups (including Emirates codes like DXB or AUH).
 
-Question: What purpose do "Optional Fields" serve in the PINT AE framework?
+VARIANTS: How are buyer and seller identified in a UAE e-invoice? | What IBT codes hold the TRN of the supplier and buyer? | Which fields store the seller and buyer names in PINT AE? | What codes are used for party identification in UAE invoices?
 
-Answer: Optional fields are not strictly required for tax compliance but provide additional business context and transparency for records and auditing. Examples include the Actual Delivery Date (IBT-072), Item Attributes (IBG-32), and Country of Origin for goods (IBT-159).
+---
 
-Question: What are "Conditional Fields"? Provide examples of when they become compulsory.
+Q23: What are "Mandatory Fields" in a UAE e-invoice, and what happens if one is missing?
 
-Answer: Conditional fields are default optional fields that become strictly mandatory under specific business scenarios. For example:
+Mandatory fields are non-negotiable details required for an invoice to legally exist. If any mandatory field — such as Invoice Number (IBT-001), Issue Date (IBT-002), TRNs (IBT-031/048), Taxable Amount (IBT-116), VAT Amount (IBT-117), or Grand Total (IBT-112) — is missing, the invoice fails validation and cannot be exchanged.
 
-Exchange Rate (BTUAE-04): Required when the invoice currency is not AED.
+VARIANTS: What fields are required on every UAE invoice? | What happens if I leave out a mandatory invoice field? | Which fields will cause invoice rejection if missing? | What are the compulsory fields in a UAE e-invoice?
 
-Service Accounting Code (BTUAE-17): Required when invoicing specifically for services.
+---
 
-Tax Total in Accounting Currency (IBT-111): Required during multi-currency accounting transactions.
+Q24: What purpose do "Optional Fields" serve in the PINT AE framework?
 
-5. Financial Breakdown & Calculations
-Question: How are products and services distinctly classified under the line items section?
+Optional fields are not strictly required for tax compliance but provide additional business context and transparency for records and auditing. Examples include the Actual Delivery Date (IBT-072), Item Attributes (IBG-32), and Country of Origin for goods (IBT-159).
 
-Answer: Each product or service must be listed on a separate line. Physical goods are classified using an HSN Code (IBT-158), while services are classified using a SAC Code (BTUAE-17).
+VARIANTS: Do I need to fill in optional fields on a UAE invoice? | What are examples of optional fields in PINT AE? | Are optional fields useful even if not required? | What is IBT-072 used for?
 
-Question: What data points must be included under the Tax Breakdown section of the invoice?
+---
 
-Answer: The tax breakdown must clearly detail how VAT is applied using:
+Q25: What are "Conditional Fields"? Provide examples of when they become compulsory.
 
-IBT-116: Taxable Amount (value before tax).
+Conditional fields are default optional fields that become strictly mandatory under specific business scenarios. For example:
+- Exchange Rate (BTUAE-04): Required when the invoice currency is not AED.
+- Service Accounting Code (BTUAE-17): Required when invoicing specifically for services.
+- Tax Total in Accounting Currency (IBT-111): Required during multi-currency accounting transactions.
 
-IBT-117: Tax Amount (actual VAT charged).
+VARIANTS: When do conditional fields become mandatory? | What is a conditional field in UAE e-invoicing? | Is exchange rate required on every invoice? | When must I include IBT-111 on an invoice?
 
-IBT-118: Tax Category Code (Standard, Zero-rated, Exempt, or Reverse Charge).
+---
 
-IBT-119: Tax Rate (the applicable VAT percentage).
+Q26: How are products and services distinctly classified under the line items section?
 
-Question: What codes represent the total calculations and final payment methods on an e-invoice?
+Each product or service must be listed on a separate line. Physical goods are classified using an HSN Code (IBT-158), while services are classified using a SAC Code (BTUAE-17).
 
-Answer: Financial summaries are tracked via IBT-109 (Total without VAT), IBT-110 (Total VAT amount), IBT-112 (Grand total including VAT), and IBT-115 (Final payable amount). The payment method is designated via the Payment Means Code (IBT-081), covering options like bank transfers or cards.
+VARIANTS: How do I classify goods versus services on a UAE invoice? | What is an HSN code in e-invoicing? | What is a SAC code used for on an invoice? | How are line items categorized in PINT AE?
 
-6. Validation & Cardinality Rules
-Question: What is the "Cardinality Rule" in the PINT AE schema, and how is it structured?
+---
 
-Answer: The cardinality rule governs field logic, explicitly defining how often any data field can appear within an XML invoice:
+Q27: What data points must be included under the Tax Breakdown section of the invoice?
 
-1..1: The field must appear exactly once.
+The tax breakdown must clearly detail how VAT is applied using:
+- IBT-116: Taxable Amount (value before tax).
+- IBT-117: Tax Amount (actual VAT charged).
+- IBT-118: Tax Category Code (Standard, Zero-rated, Exempt, or Reverse Charge).
+- IBT-119: Tax Rate (the applicable VAT percentage).
 
-0..1: The field is optional, but if included, it can only appear once.
+VARIANTS: What fields are needed in the tax breakdown? | How is VAT shown in a UAE e-invoice? | Which IBT codes cover the tax section? | What is IBT-118 used for?
 
-0..n: The field is optional and can be repeated multiple times (such as adding multiple line items or tax tiers).
+---
 
+Q28: What codes represent the total calculations and final payment methods on an e-invoice?
+
+Financial summaries are tracked via IBT-109 (Total without VAT), IBT-110 (Total VAT amount), IBT-112 (Grand total including VAT), and IBT-115 (Final payable amount). The payment method is designated via the Payment Means Code (IBT-081), covering options like bank transfers or cards.
+
+VARIANTS: Which fields hold the grand total on a UAE invoice? | What is IBT-112? | How is the payment method recorded in PINT AE? | What IBT codes are used for invoice totals?
+
+---
+
+Q29: What is the "Cardinality Rule" in the PINT AE schema, and how is it structured?
+
+The cardinality rule governs field logic, explicitly defining how often any data field can appear within an XML invoice:
+- 1..1: The field must appear exactly once.
+- 0..1: The field is optional, but if included, can only appear once.
+- 0..n: The field is optional and can be repeated multiple times (e.g., multiple line items or tax tiers).
+
+VARIANTS: What does cardinality mean in UAE e-invoice schema? | What is the difference between 1..1 and 0..1 in PINT AE? | Can a field appear more than once in a UAE XML invoice? | What does 0..n mean in the invoice schema?
+
+---
+
+Q30: What is E-Numerak?
+
+E-Numerak is an end-to-end UAE e-invoicing compliance platform that centralizes invoice creation, validation, and FTA submission into one system. It covers VAT, Excise, and e-invoice compliance and is designed for businesses operating in the UAE's digital economy.
+
+VARIANTS: What does the E-Numerak platform do? | Tell me about E-Numerak. | What kind of software is E-Numerak? | Can you explain what E-Numerak is?
+
+---
+
+Q31: What is the 5-corner model?
+
+The 5-corner model is the UAE FTA's e-invoicing infrastructure:
+- Corner 1: Your system (supplier ERP) — creates and signs the UBL 2.1 XML invoice.
+- Corner 2: Your ASP — validates the XML and transmits it to the FTA network.
+- Corner 3: FTA network — central hub that receives, archives, and routes invoices.
+- Corner 4: Buyer — receives the validated e-invoice through their ASP.
+- Corner 5: Buyer's ASP — delivers and archives the invoice for the receiving entity.
+E-Numerak operates as Corner 1.
+
+VARIANTS: How does the UAE e-invoice network work? | What are the 5 corners in UAE e-invoicing? | What role does an ASP play in the 5-corner model? | Where does E-Numerak fit in the e-invoice network?
+
+---
+
+Q32: What regulations does E-Numerak comply with?
+
+E-Numerak complies with:
+- Federal Decree-Law No. 16 of 2024 (VAT)
+- Federal Decree-Law No. 7 of 2017 (Excise)
+- FTA Tax Accounting Software Certification
+- BIS Billing 3.0
+- UBL 2.1 XML Standard
+- UAE Phase 1 & Phase 2 E-Invoicing requirements
+
+VARIANTS: Which UAE laws does E-Numerak follow? | Is E-Numerak compliant with Excise Tax rules? | What legal framework covers E-Numerak? | Does E-Numerak meet UAE Phase 2 e-invoicing standards?
+
+---
+
+Q33: What FAF data fields does E-Numerak capture?
+
+E-Numerak captures all 21 VAT FAF fields and 32 Excise FAF fields required under UAE Tax Accounting Software Certification Guidelines, including TRN, invoice numbers, VAT amounts, permit numbers, reverse charges, and product/service references.
+
+VARIANTS: Does E-Numerak cover all FTA audit file requirements? | How many FAF fields does the platform support? | What data does the FTA Audit File need? | Is E-Numerak compliant with VAT FAF requirements?
