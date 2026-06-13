@@ -4,23 +4,34 @@ from database.connections import get_db
 
 logger = logging.getLogger(__name__)
 
+import sqlite3
+import logging
 
-def save_feedback(session_id: str, user_message: str, bot_response: str, rating: str) -> bool:
-    """Save user feedback to database."""
+logger = logging.getLogger(__name__)
+
+def save_message(session_id: str, role: str, message: str) -> None:
+    """Save a single message to conversations table."""
     try:
         with get_db() as conn:
+            # User ensure karo pehle - warna foreign key fail hoga
             conn.execute(
                 """
-                INSERT INTO feedback (session_id, user_message, bot_response, rating)
-                VALUES (?, ?, ?, ?)
+                INSERT OR IGNORE INTO users (session_id, created_at)
+                VALUES (?, CURRENT_TIMESTAMP)
                 """,
-                (session_id, user_message, bot_response, rating),
+                (session_id,),
             )
-        logger.info(f"✅ Feedback saved for session: {session_id} | rating: {rating}")
-        return True
+            conn.execute(
+                """
+                INSERT INTO conversations (session_id, role, message)
+                VALUES (?, ?, ?)
+                """,
+                (session_id, role, message),
+            )
+        logger.info(f"✅ Message saved for session: {session_id} | role: {role}")
     except sqlite3.Error as e:
-        logger.error(f"❌ Error saving feedback [{session_id}]: {e}")
-        return False
+        logger.error(f"❌ Error saving message [{session_id}]: {e}")
+        raise e 
 
 def get_all_feedback(limit: int = 50, offset: int = 0) -> tuple:
     """Get feedback items with pagination and the total global count."""

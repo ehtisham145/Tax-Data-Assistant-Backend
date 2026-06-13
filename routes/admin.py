@@ -6,7 +6,8 @@ from fastapi import APIRouter, HTTPException,status,BackgroundTasks,Depends
 from utils.pipeline import run_update_pipeline
 from utils.config import ADMIN_SECRET
 from main import reload_retriever
-from schemas.feedback_schema import FeedbackPaginatedResponse,FeedbackStatsResponse
+# Add FeedbackResponse to import
+from schemas.feedback_schema import FeedbackResponse, FeedbackPaginatedResponse, FeedbackStatsResponse
 from fastapi import Query
 from starlette.concurrency import run_in_threadpool
 from utils.helpers import verify_admin
