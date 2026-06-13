@@ -1,34 +1,51 @@
-import sqlite3
-from utils.config import SQLITE_DB_PATH
+from sqlalchemy import create_engine, event
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from contextlib import contextmanager
+from pathlib import Path
 
-# ─── Connection Pool (Thread-safe) ──────────────────────────────────────────
-def get_connection():
-    """Get a thread-safe SQLite connection with WAL mode for concurrency."""
-    conn = sqlite3.connect(
-        SQLITE_DB_PATH,
-        check_same_thread=False, # FastAPI multi-thread support
-        timeout=10 
-    )
-    
-    conn.row_factory = sqlite3.Row  # Dict-style row access
-    conn.execute("PRAGMA journal_mode=WAL")    # Better concurrent reads/writes
-    conn.execute("PRAGMA foreign_keys=ON")     # Enforce FK constraints
-    conn.execute("PRAGMA synchronous=NORMAL")  # Balance speed vs safety
-    return conn
+# ─── DB Path ─────────────────────────────────────────────────────────────────
+DB_FILE_PATH = "./data/bot.db"
+Path(DB_FILE_PATH).parent.mkdir(parents=True, exist_ok=True)
 
+# ─── Engine ──────────────────────────────────────────────────────────────────
+engine = create_engine(
+    f"sqlite:///{DB_FILE_PATH}",
+    connect_args={
+        "check_same_thread": False,
+        "timeout": 30
+    },
+    pool_pre_ping=True,
+    echo=False
+)
 
-"""What does the Context Manager does It actually opens your db connection 
-and close it when work has done"""
-@contextmanager
+# ─── Pragmas ─────────────────────────────────────────────────────────────────
+@event.listens_for(engine, "connect")
+def set_pragmas(dbapi_conn, connection_record):
+    cursor = dbapi_conn.cursor()
+    cursor.execute("PRAGMA journal_mode=WAL")
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.execute("PRAGMA synchronous=NORMAL")
+    cursor.close()
+
+# ─── Base ────────────────────────────────────────────────────────────────────
+class Base(DeclarativeBase):
+    pass
+
+# ─── Session Factory ─────────────────────────────────────────────────────────
+SessionLocal = sessionmaker(
+    bind=engine,
+    autocommit=False,
+    autoflush=False
+)
+
+# ─── Context Manager ─────────────────────────────────────────────────────────
+@contextmanager          # ← Yahi missing tha
 def get_db():
-    """Context manager — auto-closes connection, auto-rollback on error."""
-    conn = get_connection()
+    session = SessionLocal()
     try:
-        yield conn
-        conn.commit()
+        yield session
     except Exception:
-        conn.rollback()
+        session.rollback()
         raise
     finally:
-        conn.close()
+        session.close()
