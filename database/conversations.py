@@ -5,10 +5,19 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+
 def save_message(session_id: str, role: str, message: str) -> None:
     """Save a single message to conversations table."""
     try:
         with get_db() as conn:
+            # User ensure karo pehle - warna foreign key fail hoga
+            conn.execute(
+                """
+                INSERT OR IGNORE INTO users (session_id, created_at)
+                VALUES (?, CURRENT_TIMESTAMP)
+                """,
+                (session_id,),
+            )
             conn.execute(
                 """
                 INSERT INTO conversations (session_id, role, message)
@@ -19,7 +28,7 @@ def save_message(session_id: str, role: str, message: str) -> None:
         logger.info(f"✅ Message saved for session: {session_id} | role: {role}")
     except sqlite3.Error as e:
         logger.error(f"❌ Error saving message [{session_id}]: {e}")
-        raise
+        raise e 
 
 
 def get_conversation_history(session_id: str) -> list:
