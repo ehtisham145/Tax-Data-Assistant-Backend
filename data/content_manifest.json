@@ -36,10 +36,10 @@
     "last_updated": "2026-06-14T16:18:22.955306+00:00"
   },
   "data/raw/uae_tax_knowledge/fta_einvoicing_clarifications.txt": {
-    "hash": "d2f90a74a3ef545a6e900b3525d174e3",
+    "hash": "feab353603068aeab094d58cdd1342c4",
     "source_type": "uae_tax_knowledge",
     "category": "fta_einvoicing_clarifications",
-    "last_updated": "2026-06-14T16:48:39.824344+00:00"
+    "last_updated": "2026-06-14T18:47:33.621095+00:00"
   },
   "data/raw/uae_tax_knowledge/fta_vat_awareness_guide.txt": {
     "hash": "6591fd0be84685dd2d16ebfcc2773e03",
@@ -48,10 +48,10 @@
     "last_updated": "2026-06-14T16:18:22.955306+00:00"
   },
   "data/raw/uae_tax_knowledge/fta_vat_guide.txt": {
-    "hash": "5ea4974a06e5cc69e0f20c91d54bcafd",
+    "hash": "da785162503659b2b2943473e8bda2e7",
     "source_type": "uae_tax_knowledge",
     "category": "fta_vat_guide",
-    "last_updated": "2026-06-14T16:48:39.852342+00:00"
+    "last_updated": "2026-06-14T18:47:33.635652+00:00"
   },
   "data/raw/uae_tax_knowledge/mof_einvoicing_overview.txt": {
     "hash": "7e8a62c50c112b40106433119fb69992",

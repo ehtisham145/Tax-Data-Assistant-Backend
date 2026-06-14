@@ -16,8 +16,10 @@ def get_openai_client():
 
 # ─── Admin Auth Helper ────────────────────────────────────────────────────────
 def verify_admin_key(secret: str = Query(...)) -> None:
+    logger.info(f"Received secret: '{secret}'")      # kya aa raha hai
+    logger.info(f"Expected secret: '{ADMIN_API_KEY}'") # kya expect hai
     if secret != ADMIN_API_KEY:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, 
+            status_code=status.HTTP_403_FORBIDDEN,
             detail="Permission denied"
         )
