@@ -1,0 +1,379 @@
+How to Create an Invoice:
+Go to Invoices → New Invoice.
+Fill in the 6 steps: Invoice Details, Supplier, Buyer, Items, Payment,
+then Submit. Your invoice is assigned a unique number and submitted
+to the ASP automatically.
+
+---
+
+Supported Invoice Types:
+The platform supports:
+• Tax Invoice (380)
+• Credit Note (381)
+• Commercial Invoice (480)
+• Continuous Supply Invoice (875)
+All per the UAE PINT / PEPPOL BIS 3.0 standard.
+
+---
+
+Invoice Statuses:
+Draft → editable, not yet submitted.
+Pending → submitted, XML being generated.
+Submitted → sent to ASP.
+Validated → accepted by FTA.
+Rejected → FTA found errors; check rejection reason.
+Cancelled → voided.
+Paid → payment received.
+
+---
+
+How to Download UBL XML:
+Open the invoice detail page. Once status is Submitted or Validated, a "Download XML" button appears.
+Click it to download the PEPPOL UBL 2.1 XML file.
+
+---
+
+How to Issue a Credit Note:
+Create a new invoice and select type "Credit Note (381)".
+Enter the original invoice number in the Reference Number field. Credit notes reverse a
+previously issued tax invoice for returns, cancellations, or corrections.
+
+---
+
+VAT Rates Available:
+Standard: 5% — applies to most goods & services.
+Zero-rated: 0% — exports, international transport, certain food items.
+Exempt: no VAT — financial services, residential property.
+
+---
+
+What is a TRN:
+TRN (Tax Registration Number) is a 15-digit number issued by the UAE
+Federal Tax Authority. It is required on every B2B tax invoice for both the seller and buyer.
+
+---
+
+What is PEPPOL / UAE PINT:
+PEPPOL (Pan-European Public Procurement On-Line) is a global e-invoicing network.
+UAE PINT is the UAE national profile based on PEPPOL BIS 3.0
+and UBL 2.1, mandated by the UAE FTA for e-invoicing compliance.
+
+---
+
+How to Add a Company:
+Go to Settings → Companies → Add Company. Enter the company name, TRN, address, and contact details.
+You must have at least one active company to create invoices.
+
+---
+
+How to Add a Customer:
+Go to Customers → Add Customer. Fill in the buyer name, TRN (required for B2B),
+address, and contact. Once saved,
+the customer appears in the Buyer picker when creating invoices.
+
+---
+
+How to Set Up Two-Factor Authentication (2FA / MFA):
+Go to Account → Security → Enable MFA. Scan the QR code
+with an authenticator app (e.g. Google Authenticator).
+Enter the 6-digit code to confirm. MFA adds a secure second login step.
+
+---
+
+User Roles:
+Admin: full access — manage company, users, and all invoices.
+Accountant: create and manage invoices.
+Viewer: read-only access to invoices.
+Inbound Supplier: accesses the supplier portal only.
+
+---
+
+FTA Certification:
+Yes. E-Numerak is FTA-certified and fully compliant with
+Federal Decree-Law No. 16 of 2024. It generates PEPPOL BIS 3.0 /
+UBL 2.1 e-invoices and submits them to the Accredited Service Provider (ASP).
+
+---
+
+Getting Started / Creating an Account on E-Numerak:
+Sign up at the E-Invoice Portal, register your company TRN, add your
+customers, and create your first invoice. Our onboarding wizard guides you through each step.
+
+---
+
+Objective of UAE E-Invoicing System:
+The UAE Ministry of Finance launched the e-invoicing system to make financial transactions more transparent, reliable, and fully compliant with VAT regulations. It aims to standardize business processes and reduce reporting errors or tax fraud.
+
+---
+
+How UAE E-Invoicing Works and Role of ASPs:
+The UAE uses a Decentralized Continuous Transaction Controls and Exchange (DCTCE) model. Accredited Service Providers (ASPs) act as trusted intermediaries that validate, send, and receive invoices in near real-time between buyers, sellers, and the Federal Tax Authority.
+
+---
+
+PINT AE Specification:
+The PINT AE specification is a globally recognized framework based on the Peppol network. It defines the specific technical format and rules for creating, exchanging, and validating digital invoices within the UAE and internationally.
+
+---
+
+Mandatory File Format for UAE E-Invoice:
+All e-invoices must be generated in XML format to ensure they are machine-readable and capable of being processed by automated systems. While businesses may retain a PDF version for internal records, only the XML file is legally valid for official submission. Paper, scanned, or image-based invoices are not permitted.
+
+---
+
+SpecificationID (IBT-024) Rule:
+The SpecificationID proves that the invoice adheres strictly to PINT AE rules. It must always begin with the exact string urn:peppol:pint:billing-1@ae-1; otherwise, the invoice will fail system validation and be rejected.
+
+---
+
+International Codes and Formats for UAE E-Invoice:
+Invoices must strictly follow these international standards:
+- Currencies: ISO 4217 standard codes (e.g., AED, USD).
+- Countries: ISO 3166-1 Alpha-2 standard codes (e.g., AE, SA).
+- Units of Measure: UNECE Recommendation 20 (e.g., pieces, litres).
+- Dates: Formatted strictly as YYYY-MM-DD.
+- Amounts: Plain numbers with decimals (e.g., 50.00) without text or symbols.
+
+---
+
+Invoice Header Required Fields:
+The invoice header must contain:
+- IBT-001: Unique sequential Invoice Number.
+- IBT-002: Invoice Issue Date.
+- IBT-003: Invoice Type Code (tax invoice, credit note, or debit note).
+- IBT-005: Currency Code.
+
+---
+
+Buyer and Seller Identification Codes in PINT AE:
+- IBT-027 / IBT-044: Seller Name and Buyer Name.
+- IBT-031 / IBT-048: Tax Registration Numbers (TRNs) for VAT compliance.
+- IBT-034 / IBT-049: Electronic Addresses (endpoints for delivery).
+- IBG-05 / IBG-08: Postal Address Groups (Emirates codes like DXB or AUH).
+
+---
+
+Mandatory Fields in a UAE E-Invoice:
+Mandatory fields are non-negotiable details required for an invoice to legally exist. If any mandatory field is missing — such as Invoice Number (IBT-001), Issue Date (IBT-002), TRNs (IBT-031/048), Taxable Amount (IBT-116), VAT Amount (IBT-117), or Grand Total (IBT-112) — the invoice fails validation and cannot be exchanged.
+
+---
+
+Optional Fields in PINT AE:
+Optional fields are not strictly required for tax compliance but provide additional business context for records and auditing. Examples include the Actual Delivery Date (IBT-072), Item Attributes (IBG-32), and Country of Origin for goods (IBT-159).
+
+---
+
+Conditional Fields in UAE E-Invoicing:
+Conditional fields are optional by default but become strictly mandatory under specific business scenarios:
+- Exchange Rate (BTUAE-04): Required when invoice currency is not AED.
+- Service Accounting Code (BTUAE-17): Required when invoicing for services.
+- Tax Total in Accounting Currency (IBT-111): Required during multi-currency transactions.
+
+---
+
+Product and Service Classification in Line Items:
+Each product or service must be on a separate line. Physical goods use an HSN Code (IBT-158). Services use a SAC Code (BTUAE-17).
+
+---
+
+Tax Breakdown Required Fields:
+The tax breakdown must clearly show:
+- IBT-116: Taxable Amount (value before tax).
+- IBT-117: Tax Amount (actual VAT charged).
+- IBT-118: Tax Category Code (Standard, Zero-rated, Exempt, or Reverse Charge).
+- IBT-119: Tax Rate (applicable VAT percentage).
+
+---
+
+Invoice Totals and Payment Method Codes:
+- IBT-109: Total without VAT.
+- IBT-110: Total VAT amount.
+- IBT-112: Grand total including VAT.
+- IBT-115: Final payable amount.
+- IBT-081: Payment Means Code (bank transfer, card, etc.).
+
+---
+
+Cardinality Rule in PINT AE Schema:
+Cardinality defines how often a field can appear in the XML invoice:
+- 1..1: The field must appear exactly once.
+- 0..1: Optional, but if included, can only appear once.
+- 0..n: Optional and can be repeated multiple times (e.g., multiple line items or tax tiers).
+
+---
+
+What is E-Numerak:
+E-Numerak is an end-to-end UAE e-invoicing compliance platform that centralizes invoice creation, validation, and FTA submission into one system. It covers VAT, Excise, and e-invoice compliance and is designed for businesses operating in the UAE's digital economy.
+
+---
+
+The 5-Corner Model:
+The 5-corner model is the UAE FTA's e-invoicing infrastructure:
+- Corner 1: Your system (supplier ERP) — creates and signs the UBL 2.1 XML invoice.
+- Corner 2: Your ASP — validates the XML and transmits it to the FTA network.
+- Corner 3: FTA network — central hub that receives, archives, and routes invoices.
+- Corner 4: Buyer — receives the validated e-invoice through their ASP.
+- Corner 5: Buyer's ASP — delivers and archives the invoice for the receiving entity.
+E-Numerak operates as Corner 1.
+
+---
+
+E-Numerak Regulatory Compliance:
+E-Numerak complies with:
+- Federal Decree-Law No. 16 of 2024 (VAT)
+- Federal Decree-Law No. 7 of 2017 (Excise)
+- FTA Tax Accounting Software Certification
+- BIS Billing 3.0
+- UBL 2.1 XML Standard
+- UAE Phase 1 & Phase 2 E-Invoicing requirements
+
+---
+
+FAF Data Fields Captured by E-Numerak:
+E-Numerak captures all 21 VAT FAF fields and 32 Excise FAF fields required under UAE Tax Accounting Software Certification Guidelines, including TRN, invoice numbers, VAT amounts, permit numbers, reverse charges, and product/service references.
+
+---
+
+What is Peppol and Why UAE Uses It:
+Peppol (Pan-European Public Procurement On-Line) is a globally recognized open network for the secure exchange of electronic business documents. The UAE adopted Peppol because it provides a standardized, interoperable infrastructure that ensures invoices can be exchanged reliably between different businesses, systems, and countries. The UAE's national implementation is called PINT AE — the UAE country profile of Peppol — which defines the specific XML structure, mandatory fields, and validation rules for all UAE e-invoices under Ministerial Decisions No. 243 and 244 of 2025.
+
+---
+
+DCTCE Model in UAE E-Invoicing:
+DCTCE stands for Decentralized Continuous Transaction Controls and Exchange. In this model, invoices are not sent to the FTA for pre-approval before reaching the buyer. Instead, they flow in near real-time through Accredited Service Providers (ASPs) over the Peppol network. Both the sender's ASP and the buyer's ASP report the Tax Data Document (TDD) to the FTA simultaneously. This means the FTA receives tax data in real time without acting as a clearance gatekeeper.
+
+---
+
+What is an Accredited Service Provider (ASP):
+An Accredited Service Provider (ASP) is a company officially approved by the UAE Ministry of Finance to act as the technical gateway between businesses and the e-invoicing network. Businesses cannot send e-invoices directly to the FTA. Every invoice must pass through an ASP, which validates the invoice against PINT AE rules, transmits it over the Peppol network to the buyer's ASP, and reports the tax data to the FTA in near real-time. Appointing an ASP is mandatory under Ministerial Decision No. 244 of 2025.
+
+---
+
+Requirements to Become an ASP in UAE:
+To become an Accredited Service Provider under Ministerial Decision No. 64 of 2025, a company must:
+- Be an active Peppol-certified provider and pass OpenPeppol AS4 conformance tests.
+- Have at least 2 years of experience operating an electronic invoicing system.
+- Hold ISO/IEC 27001 certification (information security management).
+- Hold ISO 22301 certification (business continuity management).
+- Maintain professional indemnity and cyber risk insurance.
+- Be fully registered and tax-compliant in the UAE.
+- Offer at least 100 free invoices per year to SME clients.
+- Complete the MoF accreditation process including pre-approval and full production testing.
+
+---
+
+Pre-Approved vs Fully Accredited ASP Status:
+Pre-Approval (Article 15 of Ministerial Decision No. 64 of 2025) means the Ministry of Finance has reviewed the provider's eligibility and found it meets baseline criteria — active Peppol certification, AS4 connectivity, and signed agreements. Pre-approved providers can connect to the MoF sandbox for integration testing but cannot process live production invoices. Full Accreditation (Article 16) is granted after rigorous production testing to verify the provider's system handles real transaction volumes, validates PINT AE invoices correctly, and transmits data to the MoF platform without errors.
+
+---
+
+UAE E-Invoicing Implementation Timeline and Deadlines:
+Under Ministerial Decisions No. 243 and 244 of 2025:
+- 1 July 2026: Voluntary pilot phase opens. Businesses meeting FTA technical requirements can join.
+- 30 October 2026: Deadline to appoint an ASP for businesses with annual revenue of AED 50 million or more (extended from 31 July 2026 by MoF on 11 May 2026).
+- 1 January 2027: Mandatory go-live for Phase 1 — all businesses with revenue of AED 50 million or more must be fully compliant.
+- 31 March 2027: ASP accreditation deadline for providers serving smaller businesses.
+- Phase 2 (SMEs and smaller entities): deadline to be confirmed.
+
+---
+
+Businesses in Scope for UAE Mandatory E-Invoicing:
+Under the current framework, the e-invoicing mandate applies to all persons conducting business in the UAE for B2B (Business to Business) and B2G (Business to Government) transactions. This includes:
+- Mainland UAE entities.
+- Free zone entities where UAE VAT invoicing rules apply.
+- Non-resident businesses with UAE-taxable transactions.
+Phase 1 targets businesses with annual revenue of AED 50 million or more. B2C (Business to Consumer) e-invoicing will be introduced in later phases.
+
+---
+
+Tax Data Document (TDD):
+The Tax Data Document (TDD) is a structured report that both the sender's ASP and the buyer's ASP must submit to the FTA's central platform whenever an invoice is exchanged. The TDD contains the key tax fields from the invoice — such as TRN, VAT amount, supply type, and invoice total — allowing the FTA to monitor VAT compliance in near real-time without receiving the full invoice document itself.
+
+---
+
+Message-Level Status (MLS) Response:
+A Message-Level Status (MLS) response is a confirmation message sent back to the parties in the Peppol network after an invoice or tax data document is transmitted. It confirms whether the invoice and tax data have been successfully exchanged and reported to the FTA. If transmission fails, the MLS response contains error codes explaining the rejection reason so the sender can correct and resubmit.
+
+---
+
+UAE VAT Invoice Types:
+UAE VAT law defines two types of tax invoices:
+1. Standard Tax Invoice: Used for B2B transactions and any sale where the consideration exceeds AED 10,000. Must include full buyer TRN, itemized VAT breakdown, and all mandatory PINT AE fields.
+2. Simplified Tax Invoice: Used for B2C transactions or sales below AED 10,000. Requires fewer fields — no buyer TRN is needed.
+From January 2027, all B2B standard tax invoices must be issued as structured XML e-invoices through an ASP.
+
+---
+
+Mandatory Fields on a UAE Standard Tax Invoice:
+A UAE Standard Tax Invoice under VAT law must include:
+- The word "Tax Invoice" clearly stated.
+- Invoice number (unique sequential).
+- Invoice date and date of supply.
+- Seller's name, address, and TRN.
+- Buyer's name, address, and TRN (for B2B).
+- Description of goods or services.
+- Quantity and unit price.
+- Amount payable before VAT (taxable amount).
+- VAT rate applied (5%, 0%, or exempt).
+- VAT amount charged in AED.
+- Total amount payable including VAT.
+- Currency used (VAT must always be shown in AED).
+
+---
+
+Foreign Currency Invoice Handling under UAE VAT:
+Businesses may invoice in foreign currencies (e.g., USD, EUR) for legitimate business reasons. However, the VAT amount must always be calculated and displayed in AED using the UAE Central Bank exchange rate on the date of supply. The FTA only accepts UAE Central Bank rates for currency conversion — no other rates are acceptable. The invoice must show both the foreign currency amount and the AED VAT equivalent.
+
+---
+
+UAE VAT Record Retention Requirements:
+Under UAE VAT law, businesses must retain all tax invoices and supporting documents for:
+- 5 years from the end of the tax period in which the transaction occurred (VAT purposes).
+- 7 years for Corporate Tax purposes.
+When a document is needed for both VAT and Corporate Tax, the longer 7-year retention period applies — meaning most purchase and sales invoices effectively require 7-year retention. Electronic invoices stored in the UAE must be kept in their original structured XML format, accessible and searchable with all mandatory data fields intact.
+
+---
+
+Penalties for Non-Compliance with UAE E-Invoicing Rules:
+Under Cabinet Decision No. 106 of 2025, penalties apply for:
+- Failing to appoint an ASP within the required deadline.
+- Failing to issue or transmit electronic invoices as required.
+- Not reporting system failures to the FTA on time (system failures must be reported within 2 business days).
+Additional FTA penalties exist for missing mandatory VAT invoice fields, failing to register for VAT, late filing of VAT returns, and issuing non-compliant invoices that prevent buyers from claiming input VAT recovery.
+
+---
+
+Reverse Charge Mechanism (RCM) under UAE VAT:
+Under UAE VAT, the Reverse Charge Mechanism (RCM) applies when a UAE-registered business imports services from a foreign supplier who is not registered for UAE VAT. In this case, the UAE buyer is responsible for accounting for the VAT instead of the foreign supplier. From January 2026 (Federal Decree-Law No. 16 of 2025), the requirement to issue self-invoices under RCM has been removed to reduce administrative burden, as this information is already captured in customs declarations or supplier invoices.
+
+---
+
+UAE VAT Input Tax Refund Rule (2026):
+From 1 January 2026, under Federal Decree-Law No. 16 of 2025, businesses can only claim excess input VAT refunds within 5 years from the end of the relevant tax period. Any unclaimed input VAT balance older than 5 years will expire and become non-refundable. A one-year transitional period applies until 31 December 2026 for businesses to claim refundable balances that expired before 1 January 2027.
+
+---
+
+UAE Excise Tax and Applicable Goods:
+UAE Excise Tax is an indirect tax imposed on specific harmful or luxury goods to discourage their consumption and raise revenue. It is governed by Federal Decree-Law No. 7 of 2017. Excise Tax applies to:
+- Tobacco and tobacco products: 100% excise rate.
+- Energy drinks: 100% excise rate.
+- Carbonated drinks: 50% excise rate.
+- Sweetened beverages (added from 2020): 50% excise rate.
+- Electronic smoking devices and liquids: 100% excise rate.
+Excise-registered businesses must report quantities, movement, and stock of excisable goods and include excise data on invoices.
+
+---
+
+How Excise Tax Appears on UAE E-Invoices:
+Excise invoices sit alongside VAT invoices rather than replacing them. Suppliers can show both VAT and Excise Tax on one combined invoice document, provided all required fields for each tax are present. For excise goods, the invoice must include:
+- Excise registration number of the supplier.
+- Type of excisable goods.
+- Excise tax amount per product.
+- Designated zone (warehouse) identifiers if applicable.
+- Details of goods movement (transaction type, dates).
+E-Numerak captures all 32 Excise FAF fields required under the UAE Tax Accounting Software Certification Guidelines.
+
+---
+
+UAE VAT Return Filing Frequency:
+VAT-registered businesses in UAE must file VAT returns with the FTA on either a quarterly or monthly basis, depending on the allocation assigned by the FTA. The FTA determines the filing frequency based on the nature and size of the business. VAT returns must be filed and any VAT owed must be paid by the due date to avoid penalties.
