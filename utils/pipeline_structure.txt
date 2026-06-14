@@ -1,9 +1,0 @@
-Scrape website URLs
-        ↓
-Load portal_data.txt content
-        ↓
-Combine both texts together
-        ↓
-Hash check
-        ↓
-Ingest combined text into ChromaDB ✅

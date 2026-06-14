@@ -1,0 +1,90 @@
+--- Source: https://e-numerak.com/peppol ---
+E-Numerak
+E-Invoicing Platform
+Sign In
+E-Invoice Portal
+E-Invoice Framework
+The 5-Corner Model
+UAE's mandatory e-invoicing infrastructure is built on the E-Invoice network — a secure, standardised way to exchange electronic business documents.
+How the 5 Corners Work
+The UAE FTA uses the 5-corner model to route e-invoices from the supplier to the buyer through certified intermediaries.
+1
+Your System
+Supplier / ERP
+The invoice originator. Your business creates and digitally signs the UBL 2.1 XML invoice document.
+2
+ASP / Corner 2
+Accredited Service Provider (ASP)
+The supplier's ASP receives the XML, validates it against E-Invoice rules, and transmits it to the FTA network.
+3
+FTA Network
+FTA / E-Invoice Network
+UAE Federal Tax Authority acts as the central hub — receiving, archiving, and routing invoices between corners.
+4
+Buyer / Corner 4
+Buyer
+The invoice recipient (business or government entity). They receive the validated e-invoice through their ASP.
+5
+Receiving ASP
+Buyer's ASP
+The buyer's accredited service provider delivers and archives the invoice for the receiving entity.
+1
+Your System
+Supplier / ERP
+The invoice originator. Your business creates and digitally signs the UBL 2.1 XML invoice document.
+2
+ASP / Corner 2
+Accredited Service Provider (ASP)
+The supplier's ASP receives the XML, validates it against E-Invoice rules, and transmits it to the FTA network.
+3
+FTA Network
+FTA / E-Invoice Network
+UAE Federal Tax Authority acts as the central hub — receiving, archiving, and routing invoices between corners.
+4
+Buyer / Corner 4
+Buyer
+The invoice recipient (business or government entity). They receive the validated e-invoice through their ASP.
+5
+Receiving ASP
+Buyer's ASP
+The buyer's accredited service provider delivers and archives the invoice for the receiving entity.
+Where Our Platform Sits
+We operate as
+Corner 1
+— the supplier-side system that creates, validates, and packages your invoice into UBL 2.1 XML format. Our integration layer (Corner 2 ASP) handles submission to the FTA network. Currently using a MockASPClient for development; switch to a real UAE-accredited ASP for production.
+1
+Corner 1
+Our Platform
+2
+Corner 2
+ASP Integration
+5
+Corner 5
+FTA Network
+UBL 2.1 XML Elements Generated
+Every invoice generates a fully compliant BIS Billing 3.0 XML document including:
+UBL Element
+Description
+cbc:ID
+Invoice number (auto-generated)
+cbc:IssueDate
+Invoice date (YYYY-MM-DD)
+cbc:InvoiceTypeCode
+380 (Tax), 381 (Credit Note), 480 (Commercial)
+cbc:DocumentCurrencyCode
+AED / USD / EUR
+cac:AccountingSupplierParty
+Supplier — name, TRN, address
+cac:AccountingCustomerParty
+Buyer — name, TRN, address
+cac:TaxTotal
+Total VAT with per-category breakdown
+cac:LegalMonetaryTotal
+Subtotal, taxable amount, grand total
+cac:InvoiceLine
+Line items — description, qty, price, VAT
+cac:InvoicePeriod
+Supply period (continuous supplies only)
+See It in Action
+Create an invoice and download the UBL XML right from the portal.
+E-Invoice Portal

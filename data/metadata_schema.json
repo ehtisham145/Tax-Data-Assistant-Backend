@@ -1,0 +1,6 @@
+{
+  "source_type": "company_info | uae_tax_knowledge | qa_pair",
+  "source_url": "Original URL the content was scraped from, or 'manual' for QA pairs",
+  "category": "Topic label, e.g. peppol_onboarding, einvoicing_timeline, vat_registration",
+  "last_updated": "YYYY-MM-DD"
+}

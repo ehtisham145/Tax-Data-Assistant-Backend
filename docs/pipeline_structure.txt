@@ -1,0 +1,50 @@
+1. Trigger
+Admin hits POST /admin/refresh-data (with the admin key header). The endpoint immediately returns 202 Accepted and queues run_update_pipeline_wrapper() as a BackgroundTask, so the HTTP request doesn't hang waiting for the whole pipeline to finish.
+
+2. Concurrency lock
+run_update_pipeline() checks PIPELINE_LOCK. If another pipeline run is already in progress, this call immediately returns {"status": "skipped", "reason": "Pipeline already running"} — prevents two runs from racing on the same ChromaDB/manifest files.
+
+
+3. Scraping (run_full_scrape())
+For each configured URL group:
+
+Company info pages (COMPANY_INFO_URLS) — fetched as HTML, parsed with BeautifulSoup, scripts/nav/footer stripped, visible text extracted.
+UAE tax HTML pages (UAE_TAX_HTML_URLS) — same HTML scraping process.
+UAE tax PDFs (UAE_TAX_PDF_URLS) — downloaded and text extracted via pdfplumber.
+
+Each result is saved as a .txt file under data/raw/<category>/<name>.txt, prefixed with a --- Source: <url> --- header. Requests run concurrently (max 3 at a time via semaphore) with retries handled by error logging — failed sources just produce empty/skipped files rather than crashing the whole scrape.
+
+
+4. Change detection (scan_for_changes(), called inside run_ingestion())
+Every .txt/.jsonl file under data/raw/{company_info, uae_tax_knowledge, qa_dataset}/ is read and MD5-hashed. Each hash is compared against manifest.json (saved from the previous run):
+
+New file or changed hash → marked as "changed", added to the processing list.
+Same hash → skipped, untouched.
+File that existed before but is now deleted → removed from the manifest.
+
+The manifest is updated and saved (atomic write via temp file + os.replace).
+
+
+5. Ingestion — only for changed files (run_ingestion())
+For each changed file:
+
+Load: .txt files become a single Document; .jsonl Q&A files become one Document per question/answer line, formatted as "Question: ...\nAnswer: ...".
+Delete old chunks: any existing ChromaDB entries with metadata["source_path"] == <this file's path> are deleted first — prevents duplicates/stale data from previous versions of this file.
+Chunk: .txt documents are split via SentenceSplitter (512 tokens, 50 overlap, sentence-boundary-aware). .jsonl Q&A documents are kept as single nodes (no splitting — they're already small).
+Embed: each chunk's text is sent to OpenAI's embedding API (text-embedding-3-small) to generate a vector.
+Store: embedded chunks (with metadata: source_path, source_type, category) are added to the ChromaDB tax_data collection.
+
+If a single file fails during this step, it's logged and skipped — the rest of the files still get processed.
+
+6. Retriever reload
+If at least one file was processed (files_processed > 0), build_retriever() is called — this rebuilds the LlamaIndex retriever from the updated ChromaDB collection. The result replaces the global main.retriever, so the next /chat request immediately uses the fresh data — no app restart needed.
+If files_processed == 0 (nothing changed), the retriever reload is skipped entirely.
+7. Result logging
+The background wrapper logs the final result dict — one of:
+
+{"status": "updated", "files_processed": N, "chunks_added": M}
+{"status": "skipped", "reason": "No content changes detected"}
+{"status": "skipped", "reason": "Pipeline already running"}
+{"status": "error", "reason": "<exception message>"}
+
+Since this all runs in the background, the admin checks server logs to see the outcome — the original API call already returned 202 before any of steps 3–7 happened.

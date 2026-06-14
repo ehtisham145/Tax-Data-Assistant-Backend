@@ -1,0 +1,117 @@
+--- Source: https://e-numerak.com/services ---
+E-Numerak
+E-Invoicing Platform
+Sign In
+E-Invoice Portal
+Our Services
+Everything for E-Numerak Compliance
+A complete stack for generating, validating, and submitting invoices — covering all UAE FTA requirements without the complexity.
+Tax Invoice Generation
+Create UAE-compliant Tax Invoices, Credit Notes, Commercial Invoices, and Continuous Supply invoices. UBL 2.1 XML auto-generated on every save.
+Tax Invoice
+Credit Note
+Commercial
+Continuous Supply
+FTA Audit File (FAF)
+Capture all 21 VAT FAF and 32 Excise FAF data elements required under the UAE Tax Accounting Software Certification Guidelines.
+VAT FAF
+Excise FAF
+GL/ID
+Permit Numbers
+Reverse Charges
+Real-Time Validation
+Invoice header, line items, totals, TRN, and credit note references all validated before submission — errors surfaced instantly.
+Header Validation
+TRN Check
+VAT Calculation
+Error Reporting
+PDF & XML Export
+Download human-readable PDF invoices (xhtml2pdf) and machine-readable UBL XML files for any invoice in any status.
+PDF Download
+UBL XML
+A4 Format
+On-Demand
+VAT & Excise Reporting
+Dashboard with VAT breakdown by rate type (5%, zero, exempt, out-of-scope). Per-invoice VAT summary and company-wide revenue totals.
+VAT Summary
+Excise Tax
+Dashboard Stats
+Revenue Totals
+Multi-Company & Team Access
+Manage multiple companies under one account. Invite team members with granular role-based permissions (Admin, Accountant, Viewer).
+Multi-Company
+Role-Based
+Admin
+Accountant
+Viewer
+FAF Field Coverage
+All fields required by UAE Tax Accounting Software Certification Guidelines are captured.
+VAT FAF Fields (21)
+✓
+Company name
+✓
+User ID
+✓
+TRN
+✓
+FAF version indicator
+✓
+GL/ID
+✓
+Locations of suppliers
+✓
+Reverse charges
+✓
+Locations of customers
+✓
+Tax codes
+✓
+Invoice numbers
+✓
+Invoice dates
+✓
+Permit numbers
+✓
+Transaction IDs
+✓
+Debit amounts
+✓
+Credit amounts
+✓
+VAT amounts (actual currency)
+✓
+VAT amounts (AED)
+✓
+Accounts receivable
+✓
+Accounts payable
+✓
+Product/service references
+✓
+Description of goods/services
+Excise FAF Extra Fields (11)
+✓
+Designated zone (warehouse) identifiers
+✓
+Open stock balances (Excise Tax implementation)
+✓
+Product codes
+✓
+Excise rate per product
+✓
+Transaction types
+✓
+Details of movement
+✓
+Transaction dates
+✓
+Tax payment dates
+✓
+Duty status of stock
+✓
+Stock adjustments (write-offs, losses)
+✓
+Physical location of goods
+Try the Platform
+Create your first invoice in under 2 minutes.
+E-Invoice Portal

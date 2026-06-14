@@ -1,0 +1,132 @@
+--- Source: https://mof.gov.ae/en/about-ministry/mof-initiatives/einvoicing/ ---
+Skip to main content
+Search
+Login
+Accessibility Menu
+Accessibility
+Accessibility
+Sign Language
+Read Speaker
+Video Guide
+Video Guide
+Accessibility
+Switch Language
+Logo
+Toggle main menu
+search in site
+Close main menu
+Search
+Login
+Accessibility
+Switch Language
+استمع
+Close modal
+English
+عربي
+Other languages
+The list of "Other" languages” listed above use Google Translate to create an automated translation of content for the purpose of display. Accuracy of automated content translation is not guaranteed.
+alert
+—
+—
+—
+—
+eInvoicing
+At this time the only official source of information related to the introduction of eInvoicing in the UAE is this portal.  Keep checking here for more information as the programme evolves.
+What is an eInvoice?
+It is a structured form of an invoice data that is issued and exchanged electronically between a supplier and a buyer and reported electronically to the UAE Federal Tax Authority.
+It is important to note that unstructured invoice formats such as pdf, word document, images, scanned copies and emails are not eInvoices.
+Pre-Approved eInvoicing Service Providers
+Read more
+UAE Electronic Invoicing Guidelines
+(2 MB, PDF)
+UAE Electronic Invoice Mandatory Field Requirements
+(495 KB, PDF)
+Considerations for Selecting an Accredited Service Provider
+(286 KB, PDF)
+UAE eInvoicing Programme Introduction
+(9 MB, PDF)
+Legislative Documents
+Ministerial Resolution No. (66) of 2026 Amending Certain Provisions of Ministerial Resolution No. (244) of 2025 Regarding the Implementation of the Electronic Invoicing System
+(85 KB, PDF)
+Ministerial Resolution No. (56) of 2026 Amending Certain Provisions of Ministerial Resolution No. (64) of 2025 on the eligibility criteria and Accreditation procedure for Service Providers under the Electronic Invoicing System
+(116 KB, PDF)
+Cabinet Decision No. 106 of 2025 on the Violations and Administrative Penalties Resulting from Violation of the Legislation Regulating the Electronic Invoicing System
+(90 KB, PDF)
+Ministerial Decision No. 244 of 2025 on the Implementation of the Electronic Invoicing System
+(165 KB, PDF)
+Ministerial Decision No. 243 of 2025 on the Electronic Invoicing System
+(184 KB, PDF)
+Ministerial Decision No. 64 of 2025 On the eligibility criteria and Accreditation procedure for Service Providers under the Electronic Invoicing System.
+(238 KB, PDF)
+Objectives of eInvoicing​
+Digitalization
+Reduce human intervention in certain business and tax reporting processes with a view to making the UAE and its fiscal ecosystem more digitally enabled.
+Efficiency
+Optimize cost and core operations, reduce processing time and encourage a reduction in paper wastage with a view to helping meet sustainability objectives.
+Digital economy
+Encourage the development of a digital economy by establishing an eInvoice community that supports highly qualified digital experts.
+Minimize VAT leakage
+Over the last 6 years, revenue from VAT has significantly contributed to the Emirates revenue. It is important that we create an ecosystem where both unintentional as well as deliberate efforts of VAT leakage are identified and addressed. eInvoicing is one such mechanism that has helped countries minimize such leakages.
+Economic Contribution
+Contribute to the growth and competitiveness of the economy and utilize big data.
+Security
+Enhances security by reducing the risk of fraud and unauthorized access through encrypted transactions and secure data exchange protocols.
+Contribute for policy making and government interventions
+By adopting eInvoicing, UAE government will have access to the relevant data in near real-time which will help in providing deep insights to policy makers for identifying areas and sectors that need government support and assistance.
+Benefits of eInvoicing  for our business community​
+Making the latest technology accessible  to all businesses
+82% of the UAE businesses are micro businesses  with less than AED 3m annual turnover. It is important for them to have a level playing field by having access to the latest technology at an affordable price that creates  an environment for automation and simplification.
+Significant reduction in invoice  processing cost (about 66%)
+Countries that have embarked on the journey of eInvoicing and successfully reaped its benefits provide confidence that when implemented correctly, eInvoicing can significantly reduce invoice processing costs for businesses and governments by up to 66%.
+Improve cashflows by optimizing  invoice cycle time
+By standardizing and automating the Invoice creation  and exchange, there are validations and controls built  in the entire eInvoicing process that significantly reduce errors and deliver invoices to the buyers in near real-time. Thus, creating an opportunity for faster payment  and better working capital management.
+Financial visibility and richer  information for decision making
+With every aspect of the invoice being available  in a machinable readable format, eInvoicing creates  a plethora of opportunities for analysis and proactive decision making.
+Exchange invoice beyond borders
+By adopting a proven standard such as OpenPeppol,  the business community has access to wider network where eInvoices can be seamlessly exchanged with businesses outside the UAE.
+Simplifying compliance
+Since eInvoicing mandates the reporting of invoice  tax data to the FTA through UAE Accredited Service Providers, it will facilitate the automatic pre-population  of certain fields in VAT returns and expedite refund processing.
+The following steps provide an overview of UAE’s eInvoicing model (Decentralized Continuous Transaction Control and Exchange - DCTCE):
+How does eInvoicing work?​
+The following steps provide an overview of UAE’s eInvoicing model (Decentralized Continuous Transaction Control and Exchange - DCTCE):
+Timeline
+For more information
+eInvoicing Service Provider Accreditation Portal
+Frequently Asked Questions
+Close modal
+Give us your feedback
+Give us your feedback
+Name
+(Optional)
+Email
+Your Feedback
+Note:
+all fields are mandatory, except the ones marked as optional
+Reset
+Did you find this content useful?
+You can help us improve by providing your feedback about your experience.
+Yes
+No
+Thank you for your feedback.
+Have you recently used our services online or at our service centre?
+Give us your feedback
+We use cookies
+We use cookies to improve your experience on our site. By using our website, you’re agreeing to the collection of data as described in our
+Privacy Policy.
+Allow Cookies
+Unsupported browser detected
+You are using an outdated browser (
+). Some features of this website may not work correctly. We recommend upgrading to the latest version of
+Chrome
+,
+Firefox
+,
+Edge
+, or
+Safari
+.
+Dismiss
+MOF Support
+Chatbot
+Beta
+Live Chat

@@ -1,0 +1,31 @@
+--- Source: https://e-numerak.com/about ---
+E-Numerak
+E-Invoicing Platform
+Sign In
+E-Invoice Portal
+About Us
+Built for the UAE Digital Economy
+We built the E-Numerak to make FTA compliance straightforward — removing the complexity so businesses can focus on growth, not paperwork.
+What Drives Us
+Mission
+Simplify UAE e-invoicing compliance for businesses of all sizes through modern, developer-friendly tooling.
+For Teams
+Multi-user, role-based access (Admin, Accountant, Viewer) so your entire finance team works in one place.
+Security
+JWT authentication, company-scoped data isolation, and audit trails on every invoice action.
+Certified
+Built against the FTA Tax Accounting Software Certification Guidelines for VAT and Excise Tax audit files.
+UAE Tax & E-Invoicing Timeline
+2017
+UAE Federal Decree-Law No. 8 — VAT introduced at 5%
+2019
+VAT implementation — businesses required to register
+2022
+Excise Tax expanded — energy drinks, tobacco, carbonated beverages
+2024
+Federal Decree-Law No. 16 — e-invoicing mandated
+2026
+Phase 1 E-Invoice B2B/B2G e-invoicing goes live
+Start Issuing Compliant Invoices
+Everything set up. Just log in and create your first invoice.
+E-Invoice Portal

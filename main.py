@@ -1,114 +1,79 @@
 import logging
-import os
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
-from utils.config import DOCS_URL
-from utils.config import (
-    GROQ_API_KEY, JINA_API_KEY,
-    CHROMA_DB_PATH, ALLOWED_ORIGINS, OPENAI_API_KEY)
-from database.init_db import init_db
 
-# Logging setup
+from utils.config import (
+    DOCS_URL,
+    ALLOWED_ORIGINS,
+    OPENAI_API_KEY,
+)
+from database_setup.init_db import init_db
+from utils.rag import build_retriever  # shared retriever-building logic
+from migrations.migrate import migrate
+
+from routes.auth import router as auth_router
+from routes.chat import router as chat_router
+from routes.admin import router as admin_router
+from routes.feedback import router as feedback_router
+
+# ─── Logging ──────────────────────────────────────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
 # ─── Global Clients ───────────────────────────────────────────────────────────
-groq_client = None
 openai_client = None
 retriever = None
-
-
-# ─── Retriever Reload Function ────────────────────────────────────────────────
-async def reload_retriever():
-    """Reload retriever after pipeline updates ChromaDB."""
-    global retriever
-    try:
-        from llama_index.core import VectorStoreIndex, Settings
-        from llama_index.embeddings.jinaai import JinaEmbedding
-        from llama_index.vector_stores.chroma import ChromaVectorStore
-        import chromadb
-
-        embed_model = JinaEmbedding(api_key=JINA_API_KEY)
-        Settings.embed_model = embed_model
-
-        chroma_client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
-        chroma_collection = chroma_client.get_or_create_collection("tax_data")
-        vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-
-        index = VectorStoreIndex.from_vector_store(vector_store)
-        retriever = index.as_retriever(similarity_top_k=3)
-        logger.info("✅ Retriever reloaded successfully!")
-        return True
-    except Exception as e:
-        logger.error(f"❌ Retriever reload failed: {e}")
-        return False
 
 
 # ─── Lifespan — Startup & Shutdown ───────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """All startup logic here — clean, structured, error-friendly."""
-    global groq_client, openai_client, retriever
+    global openai_client, retriever
 
-    # 1. Database
+    # 1. Ensure tables exist (idempotent safety net alongside migrations)
     try:
         init_db()
     except Exception as e:
-        logger.critical(f"❌ Database init failed: {e}")
+        logger.critical(f"Database init failed: {e}", exc_info=True)
         raise
 
-    # 2. OpenAI Client
+    # 2. Run schema migrations before anything else touches the DB
+    try:
+        migrate()
+        logger.info("Migrations applied successfully")
+    except Exception as e:
+        logger.critical(f"Migration failed: {e}", exc_info=True)
+        raise
+
+    # 3. OpenAI client
     try:
         from openai import AsyncOpenAI
         openai_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
-        logger.info("✅ OpenAI client initialized!")
+        logger.info("OpenAI client initialized")
     except Exception as e:
-        logger.critical(f"❌ OpenAI init failed: {e}")
+        logger.critical(f"OpenAI init failed: {e}", exc_info=True)
         raise
 
-    # 3. Embeddings + ChromaDB + Retriever
+    # 4. Retriever (embeddings + ChromaDB)
     try:
-        from llama_index.core import VectorStoreIndex, Settings, SimpleDirectoryReader
-        from llama_index.embeddings.jinaai import JinaEmbedding
-        from llama_index.vector_stores.chroma import ChromaVectorStore
-        from llama_index.core import StorageContext
-        import chromadb
-
-        embed_model = JinaEmbedding(api_key=JINA_API_KEY)
-        Settings.embed_model = embed_model
-
-        chroma_client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
-        chroma_collection = chroma_client.get_or_create_collection("tax_data")
-        vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-        storage_context = StorageContext.from_defaults(vector_store=vector_store)
-
-        if os.path.exists(CHROMA_DB_PATH) and len(chroma_collection.get()["ids"]) > 0:
-            index = VectorStoreIndex.from_vector_store(vector_store)
-            logger.info("✅ Existing ChromaDB data loaded!")
-        else:
-            documents = SimpleDirectoryReader(input_files=["data/portal_data.txt"]).load_data()
-            index = VectorStoreIndex.from_documents(documents, storage_context=storage_context)
-            logger.info("✅ Fresh data ingested into ChromaDB!")
-
-        retriever = index.as_retriever(similarity_top_k=3)
-        logger.info("✅ Retriever ready!")
-
+        retriever = build_retriever()
+        logger.info("Retriever ready")
     except Exception as e:
-        logger.critical(f"❌ ChromaDB/Retriever init failed: {e}")
+        logger.critical(f"Retriever init failed: {e}", exc_info=True)
         raise
 
-    logger.info("🚀 E-Numerak API startup complete!")
+    logger.info("E-Numerak API startup complete")
     yield
 
-    # Shutdown
-    logger.info("🛑 E-Numerak API shutting down...")
+    logger.info("E-Numerak API shutting down")
 
 
 # ─── App ──────────────────────────────────────────────────────────────────────
@@ -126,59 +91,32 @@ app = FastAPI(
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-from migrate import migrate
 
-@app.on_event("startup")
-async def startup():
-    migrate()
-    init_db()
-    
 # ─── CORS ─────────────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["*"],
     allow_credentials=True,
 )
 
 # ─── Routers ──────────────────────────────────────────────────────────────────
-from routes.auth import router as auth_router
-from routes.chat import router as chat_router
-from routes.admin import router as admin_router
-
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(chat_router, prefix="/chat", tags=["Chat"])
 app.include_router(admin_router, prefix="/admin", tags=["Admin"])
+app.include_router(feedback_router,prefix="/feedback",tags=["Feedback"])
 
-# ─── Endpoints ────────────────────────────────────────────────────────────────
+# ─── Health Endpoints ─────────────────────────────────────────────────────────
 @app.get("/", tags=["Health"])
 def root():
-    return {"status": "E-Numerak Tax Chatbot API is running!"}
+    return {"status": "E-Numerak Tax Chatbot API is running"}
 
 
 @app.get("/health", tags=["Health"])
 def health_check():
     return {
         "status": "healthy",
-        "groq": groq_client is not None,
         "openai": openai_client is not None,
         "retriever": retriever is not None,
     }
-
-
-@app.get("/test-openai", tags=["Health"])
-async def test_openai():
-    try:
-        response = await openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": "Say hello in one sentence."}],
-            max_tokens=50,
-        )
-        return {
-            "status": "success",
-            "model": response.model,
-            "reply": response.choices[0].message.content,
-        }
-    except Exception as e:
-        return {"status": "error", "detail": str(e)}

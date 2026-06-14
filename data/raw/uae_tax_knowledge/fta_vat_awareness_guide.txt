@@ -1,0 +1,294 @@
+--- Source: https://tax.gov.ae/DataFolder/Files/Guides/VAT/Awareness/Get%20to%20know%20your%20Tax%20Obligations.pdf ---
+Get to know your
+Tax Obligations
+Do you need to register for Value Added Tax?
+A business resident in the UAE that makes taxable supplies within the UAE is obliged to register
+for Value Added Tax (“VAT”) if the total value of its taxable supplies and imports exceeded the
+mandatory registration threshold of AED 375,000 over the previous 12 months, or the business
+expects that the total value of its taxable supplies and imports will exceed the mandatory
+registration threshold in the next 30 days.
+A business also has the option to voluntarily register for VAT if the total value of its taxable
+supplies and imports or taxable expenses in the previous 12 months exceeded the voluntary
+registration threshold of AED 187,500, or the business expects that the total value of its taxable
+supplies and imports or taxable expenses will exceed the voluntary registration threshold in the
+next 30 days.
+Transactions subject to VAT are divided into 3 categories:
+5 0
+All supplies subject All supplies subject to Import of goods and
+to VAT at %5. VAT at zero-rate. services.
+Which supplies are subject to %5
+VAT?
+5
+All supplies that fall within the scope of UAE
+VAT and are not subject to the zero-rate.
+Which supplies are subject to
+VAT at zero-rate?
+The following supplies are subject to VAT at the zero rate
+as an exception, provided that certain conditions for each
+(as mentioned in the legislation) are met:
+- Export of goods and services.
+- First supply of buildings specifically designed
+- International transport of goods and passengers, for charitable institutions (lease or sale).
+and transport-related services.
+- First supply of buildings that were converted
+- Certain means of transport, such as trains, sea from non-residential to residential units (lease
+vessels and aircraft, and goods and services or sale).
+related to such means of transport.
+- Crude oil and natural gas.
+- First supply of residential buildings (lease or sale)
+within 3 years of finalizing their construction. - Certain educational services and related
+goods and services.
+- Airplanes and marine vessels designed for the
+purpose of rescue or aid through air or sea. - Necessary and preventive healthcare services
+and related goods and services.
+- Certain precious investment metals.
+What are the supplies that are exempt
+from VAT?
+The following supplies are exempt from VAT, provided that
+certain conditions for each (as mentioned in the legislation)
+are met:
+- Certain financial services. - Bare land.
+- Supply of residential units (lease or sale), - Local passenger transport.
+if such supply is not subject to zero-rate.
+What records should you keep and for how long?
+As a prerequisite, every person who conducts any business, whether
+registered for tax or not, should hold the following documentations and
+records, as mentioned in the legislation. These documents should include
+accounting records with entries on payments, receipts, purchases, sales,
+profits and expenses, including:
+- Balance sheets and income - Inventory records and statements
+statements (profit and loss accounts). (including quantities and values) held at
+the end of any relevant Tax Period and all
+- Records of wages and salaries. records of stock-counts related - to
+inventory statements.
+- Fixed asset records.
+- Any records as specified in tax law and
+other legislation.
+In addition to the above, VAT registered businesses
+in the UAE must retain the following documentations:
+- Records of all supplies and imports of - Records of goods and services
+goods and services. purchased for which input tax has not
+been deducted.
+- All tax invoices, tax credit notes and
+alternative documents received and - Records of exported goods and
+issued. services.
+- Records of goods and services that - Records of adjustments or corrections
+have been disposed of or used for to accounts or tax invoices.
+matters not related to the business,
+detailing the VAT paid on those goods
+and services.
+A Vat registered business also needs to
+maintain a VAT record or account which show:
+-The output tax due on taxable supplies. -The accrued output tax after correction of
+any errors or adjustments.
+The output tax due on taxable supplies
+-
+accounted for via the reverse charge -Input tax recoverable on supplies or
+mechanism. imports.
+-Input tax recoverable after the correction
+of any errors or adjustments.
+Note: The aforementioned records must be kept for a minimum of 5
+years after the end of the tax period. Where the taxable person
+owns real estate, the records relating to the real estate must be kept
+for a period of 15 years, in accordance with the requirements of tax
+legislation.
+Do you have multiple branches?
+A taxable person and all its branches shall be treated as the
+same person for the purposes of tax liability and shall
+receive only one Tax Registration Number (TRN).
+Can I form a Tax Group?
+Related businesses that share economic, financial and regulatory ties
+(either in law, shareholding or voting rights) can be registered as a tax
+group if they have an establishment in the UAE, and all members of
+the group are legal persons under joint control.
+Transactions between tax group members are disregarded for VAT
+purposes, and one group member nominated as the "representative
+member" files consolidated VAT returns covering all group activities.
+Creating and using your e-services account:
+Registration can be carried out simply using the -24hour online service portal via
+the FTA website: www.tax.gov.ae, through the following steps:
+Sign-up for an e-services account through the FTA’s website and
+1
+activate it
+Access the e-services account dashboard and click on “Add New
+2 Taxable Person” then click on “Register for VAT” and complete
+the registration process
+After receipt of an e-mail verification, the taxable person logs-in to
+3
+the e-services portal to continue the tax registration process.
+Register in less than 20 minutes:
+When the required documents are prepared accurately in advance, it only takes 45
+minutes to fill out the request form for electronic VAT registration. While completing
+the form, a taxpayer may save the application at any time and complete the process
+once all documentation is available to be submitted.
+Examples of supporting documents:
+- Valid trade license or business -Proof of the authorized
+license manager/signatory’s right to sign
+documents (e.g.: articles of incorporation
+- Passport (and Emirates ID in case of or public/private agency, certified by
+residency in the UAE) of the notary).
+authorized signatory.
+-Financial report showing monthly taxable
+supplies for the previous 12 months.
+How do I calculate the VAT included in
+the amounts I receive from the client?
+The VAT included in any transaction is calculated by dividing the
+price by 21.
+Example: Calculation mechanism:
+VAT included in price = AED 220 ÷
+Price including VAT = AED 220
+21 = AED 10.48
+What are your obligations after registration?
+After registering with the FTA, a taxable person is referred to as ‘Registrant’.
+Advertise prices inclusive of VATA registrant must ensure that prices of goods and services
+advertised to consumers include VAT, whether in food menus, catalogues, or price tags.
+1 Issue Tax Invoices for each sale of taxable
+goods or services
+A registrant must issue valid tax invoices for each taxable supply of
+goods or services. The issuance of proper tax invoices is one of the tax
+compliance requirements that must be adhered to in the course of
+making taxable supplies. Make sure that all the tax invoices you issue
+meet the necessary criteria, as below.
+The Tax Invoice shall include the following:
+-The words “Tax Invoice” clearly displayed on the invoice. -Description of the goods or services supplied.
+-The name, address and Tax Registration Number (TRN) of
+-Unit price, the quantity or volume of the supply, the
+the supplier.
+payable VAT rate and payable amount (in AED) for each
+-The name, address and TRN (if registered for VAT) of the good or service.
+recipient.
+-Any o¬ffered discount rates.
+-A sequential tax invoice number or a unique invoice
+number that enables the identification of the tax invoice
+and its number in any sequence of invoices. -Total amount payable in AED.
+-Date of issuance. -The amount of the tax payable in AED and the applicable
+exchange rate.
+-The date of supply if it is different from the date of
+issuance.
+-If the recipient is required to account for VAT, the invoice
+must include a reference to this, and a reference to the
+relevant provision of the Law.
+Simplified Tax Invoice:
+A registrant may issue a simplified tax invoice in the following cases:
+Where the recipient is registered for VAT but the
+Where the recipient is not registered
+1 2
+consideration for the supply does not exceed
+for VAT; or
+AED 10,000.
+Please note that ‘consideration’ is all that is received or expected to be received in return for the
+supply of Goods or Services, whether this is in money or other acceptable forms of payment.
+The simplified invoice must contain each of the following details:
+- The words “Tax Invoice” clearly displayed on the invoice. - Date of issuance of the tax invoice.
+- The name, address and TRN of the registered supplier. - Description of the goods or services supplied.
+- The total consideration and the VAT amount charged.
+2
+Submit your tax return on time
+The FTA usually allocates three-month tax periods (quarterly) to a
+registrant, however, it may specify shorter or longer tax periods for
+registrants, if it deems it necessary. A registrant is required to submit their
+tax return no later than the 28th day from the end of each tax period, or on
+the following working day if the corresponding date falls on an official
+holiday or a weekend.
+Examples of tax return periods: -Quarterly (e.g. March – May, June – August,
+September – November, December – February).
+- Monthly (January, February, March, ... etc).
+- Quarterly (e.g. January – March, April – June, July – -Semi-annually
+September, October – December)). (January – June and July –December)
+-
+Quarterly (e.g. February – April, May – July, August
+– October, November – January).
+In all cases, a registrant must file their VAT returns within the periods specified
+by the FTA, even if there are no taxes payable for the period in question. The
+VAT returns must be submitted through the e-services portal and must include:
+• The value of supplies subject to the standard tax • The value of supplies subject to Reverse Charge
+rate made during the tax period and the imposed received during the tax period.
+output tax, per Emirate.
+• Goods imported into the UAE
+• Tax refunds provided to tourists under the Tax
+Refunds for Tourists Scheme, for retailers who • The value of purchases and expenses incurred
+provide tax refunds to tourists in the UAE under the during the tax period if you are seeking to claim the
+official tourists refund scheme. input tax, and the refundable tax value.
+• The value of supplies subject to the zero-rate • Any supplies which were subject to the reverse
+provided during the tax period. charge for which you would like to recover input tax.
+• The value of provided supplies exempt from VAT
+during the tax period.
+To submit the tax return, a registrant has to:
+Access the e-services portal on the FTA website eservices.tax.gov.ae, click on the “Value
+1
+Added Tax” tab to find Tax Returns, then choose “VAT201” then “New Tax Return”.
+Complete the form: Fill in all the information concerning sales and other outputs as well as
+2
+expenditures and other inputs as follows:
+a Value without VAT.
+b VAT rate value
+Based on data entered, the system calculates the payable or refundable VAT for the
+relevant tax period.
+Review all information entered into the form after all fields have been carefully filled in and
+3
+confirmed, and after verifying the accuracy of the information, click "Submit."
+Pay due VAT by clicking the “My Payments” tab, and make sure payment dates are met in
+4
+due time.
+Pay your taxes on time
+area registrant is required to pay any outstanding amounts by the due date of tax return
+submission, i.e. by the 28th day of the month following the end of a tax return period (or on
+the next working day if the date coincides with a public holiday or weekend).
+It is important that a registrant pays taxes as early as possible before they are due and not
+wait until the last day, to avoid any unforeseen circumstances that might cause delays in the
+FTA receiving the payment (for example, the bank may need two or three working days to
+carry out a transfer).
+The FTA provides various payment channels tailored to the needs of all its
+registered categories to facilitate the payment of taxes due:
+- The UAE Funds Transfer System (UAEFTS) of the Central Bank, where a Generated
+International Bank Account Number (GIBAN) is allocated to each person registered with
+the FTA, enabling the taxable person to pay the tax in a variety of flexible methods. The
+system has no extra financial obligations or fees and o¬ffers real-time transfer of funds
+between bank accounts. It also provides the opportunity to pay due taxes through the
+branches of some 77 banks, money exchange agencies and financial institutions
+throughout the UAE, where payments can be submitted using the GIBAN. Bank cards
+can also be used for payments.
+-
+Through the new e-Dirham Gateway via FTA e-services or credit cards.
+Your Entitlement to recover input tax
+A registrant may recover the input tax incurred on the purchase of goods and services in
+the course of business subject to keeping records andtax invoices that determine the
+value of VAT charged by suppliers, and which proves that VAT was paid on such goods
+or services. The total tax incurred during any tax period should be disclosed in the tax
+return for that tax period.
+Blocked input tax
+Input tax incurred by a registrant may be blocked from recovery.
+Such expenses are:
+- Entertainment costs;
+- Motor vehicles used for personal purposes; and
+- Employee-related expenses.
+Contacting the Federal Tax Authority
+Eservices.tax.gov.ae
+All FTA services are provided electronically, such as registration, filing of tax returns, submitting tax
+payments, and refund requests, via the e-services portal, which can be accessed from www.tax.gov.ae.
+www.tax.gov.ae
+The FTA, through its website www.tax.gov.ae, also provides all legislation, guides, declarations and
+e-Learning programs that taxpayers can use to understand their tax obligations and how to fulfill them.
+600599994
+If you have any inquiries regarding tax procedures, call the above telephone number to speak to one of
+our call-center team members who will answer all your questions and provide assistance, supporting you
+with the information you might need.
+Our social media platforms
+To find out news and activities of the FTA, we invite you to follow us on:
+@UAETAX @UAETAX @Theuaetaxes Federal Tax Authority
+Tax Support
+The FTA provides taxpayers with an array of tools and resources to assist in knowing the tax obligations
+and how to fulfill them.
+Tax Agents Registry:
+A Tax Agent can assist taxpayer with their tax obligations, in accordance with a contractual agreement
+between the person and the tax agent. A taxpayer can find a suitable tax agent in their area by clicking
+on the ‘Tax Support’ tab on the website and selecting the ‘Registered Tax Agents’ tab, then using the
+search filters to identify the most suitable tax agent for their needs.
+Tax Accounting Software Vendors list:
+This list allows taxpayers to identify FTA-approved Tax Accounting Software vendors and use these
+providers to automate their business tax system.
+Kindly note that this document is intended to provide general information. It does not include all legal
+details relating to a person's tax obligations, and is not intended as a legal reference. Accordingly,
+everyone must consider their obligations in accordance with the details stated in the UAE Tax Laws
+and Executive Regulations, which are available on the FTA website.
+994 599 600 tax.gov.ae

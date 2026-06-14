@@ -1,22 +1,24 @@
-import asyncio
-from fastapi import APIRouter, HTTPException, Depends
-from fastapi.responses import StreamingResponse
+import logging
 from collections import defaultdict
+
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, status
+from fastapi.responses import StreamingResponse
 from starlette.concurrency import run_in_threadpool
-from database.crud.conversation import save_message
-from database.crud.users import get_user_by_id
+from sqlalchemy.orm import Session
+
+from database_setup.connections import get_db, get_db_ctx
+from database_setup.crud.conversation import save_message, get_history as get_history_db
+from database_setup.crud.users import get_user_by_id
+from schemas.chat import ChatRequest, HistoryResponse, HistoryItem
 from utils.config import OPENAI_MODEL, MAX_HISTORY
 from utils.helpers import get_openai_client, get_retriever
-from schemas.chat import ChatRequest
-from schemas.feedback import FeedbackRequest
-from database.crud.feedback import save_feedback
-from database.connections import get_db
-import logging
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
 # In-memory store — user_id -> list of messages
+# NOTE: single-process only. Under multi-worker deployment, each worker has
+# its own copy; user history will be inconsistent across workers.
 conversation_memory: dict = defaultdict(list)
 
 
@@ -25,12 +27,24 @@ conversation_memory: dict = defaultdict(list)
 def get_history_from_memory(user_id: int) -> list:
     return list(conversation_memory[user_id])
 
+
 def save_history_to_memory(user_id: int, history: list):
     conversation_memory[user_id] = history[-MAX_HISTORY:]
 
+
 def clear_history_from_memory(user_id: int):
-    if user_id in conversation_memory:
-        del conversation_memory[user_id]
+    conversation_memory.pop(user_id, None)
+
+
+# ─── Background save helpers ──────────────────────────────────────────────────
+
+def _save_message_sync(user_id: int, role: str, message: str):
+    """Runs in threadpool via BackgroundTasks. Errors are logged, not silent."""
+    try:
+        with get_db_ctx() as db:
+            save_message(db, user_id, role, message)
+    except Exception as e:
+        logger.error(f"Failed to persist {role} message for user_id={user_id}: {e}", exc_info=True)
 
 
 # ─── Chat Endpoint ────────────────────────────────────────────────────────────
@@ -38,49 +52,38 @@ def clear_history_from_memory(user_id: int):
 @router.post("/chat")
 async def chat(
     body: ChatRequest,
+    background_tasks: BackgroundTasks,
     openai_client=Depends(get_openai_client),
     retriever=Depends(get_retriever),
+    db: Session = Depends(get_db),
 ):
-    # 1. Auth + RAG parallel
+    # 1. Auth check (DB session via Depends, retrieval via threadpool)
     try:
-        def fetch_user():
-            with get_db() as db:
-                return get_user_by_id(db, body.user_id)
-
-        user_result, nodes = await asyncio.gather(
-            run_in_threadpool(fetch_user),
-            run_in_threadpool(retriever.retrieve, body.message),
-        )
+        user_result = await run_in_threadpool(get_user_by_id, db, body.user_id)
+        nodes = await run_in_threadpool(retriever.retrieve, body.message)
     except Exception as e:
-        logger.error(f"❌ Auth/Retrieval error: {e}")
-        raise HTTPException(status_code=500, detail="Failed to process request.")
+        logger.error(f"Auth/retrieval error for user_id={body.user_id}: {e}", exc_info=True)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to process request.")
 
-    # Auth check
-    if not user_result or not user_result["success"]:
+    if not user_result or not user_result.get("success"):
         raise HTTPException(
-            status_code=403,
-            detail="User not found. Please register before chatting."
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User not found. Please register before chatting.",
         )
 
     user_name = user_result["name"]
-    user_id   = body.user_id
-    context   = "\n".join([n.text for n in nodes]) if nodes else "No relevant context found."
+    user_id = body.user_id
+    context = "\n".join(n.text for n in nodes) if nodes else "No relevant context found."
 
-    # 2. History memory se lo
+    # 2. Load history from memory, append new user message
     history = get_history_from_memory(user_id)
-
-    # 3. User message memory mein save karo
     history.append({"role": "user", "content": body.message})
     save_history_to_memory(user_id, history)
 
-    # DB mein background save
-    def db_save_user_msg():
-        with get_db() as db:
-            save_message(db, user_id, "user", body.message)
+    # Persist user message after response is sent (guaranteed to run, errors logged)
+    background_tasks.add_task(_save_message_sync, user_id, "user", body.message)
 
-    asyncio.create_task(run_in_threadpool(db_save_user_msg))
-
-    # 4. System prompt — same rakha
+    # 3. System prompt
     system_prompt = (
         f"You are an expert UAE Tax Assistant representing the E-Numerak platform.\n"
         f"Your primary task is to answer the user's question accurately based on the provided context.\n\n"
@@ -99,12 +102,12 @@ async def chat(
         f"9. PLATFORM DESCRIPTION OVERRIDE: If the user asks general questions like \"What is E-Numerak?\" and context is empty, "
         f"explain: \"**E-Numerak** is an advanced, automated e-invoicing and compliance platform designed for businesses in the UAE.\"\n\n"
         f"SUPPORT BLOCK:\n"
-        f"📧 info@e-numerak.com\n"
-        f"📞 +971 50 635 8421\n"
-        f"🕐 Mon–Fri, 9AM–6PM GST"
+        f"Email: info@e-numerak.com\n"
+        f"Phone: +971 50 635 8421\n"
+        f"Hours: Mon-Fri, 9AM-6PM GST"
     )
 
-    # 5. Stream response
+    # 4. Stream response
     collected_response: list[str] = []
 
     async def generate():
@@ -113,8 +116,7 @@ async def chat(
                 model=OPENAI_MODEL,
                 messages=[
                     {"role": "system", "content": system_prompt},
-                    *[{"role": m["role"], "content": m["content"]} for m in history[:-1]],
-                    {"role": "user", "content": body.message},
+                    *[{"role": m["role"], "content": m["content"]} for m in history],
                 ],
                 stream=True,
             )
@@ -126,7 +128,7 @@ async def chat(
                     yield token
 
         except Exception as e:
-            logger.error(f"❌ OpenAI streaming error: {e}")
+            logger.error(f"OpenAI streaming error for user_id={user_id}: {e}", exc_info=True)
             yield "Sorry, an error occurred while generating the response."
 
         finally:
@@ -134,13 +136,10 @@ async def chat(
             if full_response:
                 history.append({"role": "assistant", "content": full_response})
                 save_history_to_memory(user_id, history)
-
-                def db_save_bot_msg():
-                    with get_db() as db:
-                        save_message(db, user_id, "assistant", full_response)
-
-                asyncio.create_task(run_in_threadpool(db_save_bot_msg))
-                logger.info(f"✅ Response saved for user_id: {user_id}")
+                # Persist after streaming finishes - direct call since we're
+                # already past the response lifecycle here (generator finally block)
+                await run_in_threadpool(_save_message_sync, user_id, "assistant", full_response)
+                logger.info(f"Response saved for user_id={user_id}")
 
     return StreamingResponse(generate(), media_type="text/plain")
 
@@ -150,81 +149,31 @@ async def chat(
 @router.post("/clear-memory/{user_id}")
 async def clear_memory(user_id: int):
     """Clear in-memory conversation history — call on New Chat."""
-    try:
-        clear_history_from_memory(user_id)
-        logger.info(f"✅ Memory cleared for user_id: {user_id}")
-        return {"status": "Memory cleared!", "user_id": user_id}
-    except Exception as e:
-        logger.error(f"❌ Failed to clear memory for user_id {user_id}: {e}")
-        raise HTTPException(status_code=500, detail="Could not clear memory.")
+    clear_history_from_memory(user_id)
+    logger.info(f"Memory cleared for user_id={user_id}")
+    return {"status": "Memory cleared", "user_id": user_id}
 
 
-# ─── Feedback Endpoint ────────────────────────────────────────────────────────
+# ─── History ──────────────────────────────────────────────────────────────────
 
-@router.post("/feedback")
-async def feedback(body: FeedbackRequest):
-    try:
-        def db_save_feedback():
-            with get_db() as db:
-                return save_feedback(
-                    db,
-                    body.user_id,
-                    body.user_message,
-                    body.bot_response,
-                    body.rating
-                )
-        result = await run_in_threadpool(db_save_feedback)
-        return result
-    except Exception as e:
-        logger.error(f"❌ Feedback error: {e}")
-        raise HTTPException(status_code=500, detail="Could not save feedback.")
-# # ─── History ──────────────────────────────────────────────────────────────────
+@router.get("/history/{user_id}", response_model=HistoryResponse)
+async def get_history(
+    user_id: int,
+    limit: int = 50,
+    offset: int = 0,
+    db: Session = Depends(get_db),
+):
+    """Get chat history for a user from the SQLite DB."""
+    user_result = await run_in_threadpool(get_user_by_id, db, user_id)
+    if not user_result or not user_result.get("success"):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
 
-# @router.get("/history/{session_id}")
-# async def get_history(session_id: str):
-#     """Get full chat history for a session from SQLite DB."""
-#     user = await run_in_threadpool(get_user_by_session, session_id)
-#     if not user:
-#         raise HTTPException(status_code=404, detail="User not found.")
+    records = await run_in_threadpool(get_history_db, db, user_id, limit, offset)
 
-#     history = await run_in_threadpool(get_conversation_history, session_id)
-
-#     return {
-#         "session_id": session_id,
-#         "user_name": user[0],
-#         "total_messages": len(history),
-#         "messages": [
-#             {"role": h[0], "message": h[1], "created_at": h[2]}
-#             for h in history
-#         ],
-#     }
-
-# # ─── Feedback ─────────────────────────────────────────────────────────────────
-
-# @router.post("/feedback")
-# async def submit_feedback(body: FeedbackRequest):
-#     """Save user feedback for a bot response."""
-#     try:
-#         success = await run_in_threadpool(
-#             save_feedback,
-#             body.session_id,
-#             body.user_message,
-#             body.bot_response,
-#             body.rating,
-#         )
-
-#         if not success:
-#             raise HTTPException(
-#                 status_code=500,
-#                 detail="Failed to save feedback."
-#             )
-
-#         return {
-#             "status": "success",
-#             "message": "Feedback saved successfully!",
-#             "rating": body.rating
-#         }
-
-#     except Exception as e:
-#         logger.error(f"❌ Feedback error: {e}")
-#         raise HTTPException(status_code=500, detail="Could not save feedback.")
+    return HistoryResponse(
+        success=True,
+        history=[
+            HistoryItem(role=r.role, message=r.message, created_at=r.created_at)
+            for r in records
+        ],
+    )

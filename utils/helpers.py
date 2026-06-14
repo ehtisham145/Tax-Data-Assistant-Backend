@@ -1,17 +1,9 @@
 # ─── Dependency: groq_client + retriever ─────────────────────────────────────
 import logging
-from fastapi import HTTPException
-from utils.config import ADMIN_SECRET
-from typing import Optional
-from database.connections import get_db
-import sqlite3
-
+from fastapi import HTTPException,status,Query,Header
+from utils.config import ADMIN_API_KEY
 
 logger = logging.getLogger(__name__)
-def get_groq_client():
-    """Proper FastAPI dependency — no circular import hack needed."""
-    from main import groq_client
-    return groq_client
 
 def get_retriever():
     from main import retriever
@@ -23,11 +15,8 @@ def get_openai_client():
 
 
 # ─── Admin Auth Helper ────────────────────────────────────────────────────────
-
-def verify_admin(secret: str):
-    """Check admin secret — raise 403 if wrong."""
-    if secret != ADMIN_SECRET:
-        raise HTTPException(status_code=403, detail="❌ Not allowed! Admin only.")
-
+def verify_admin_key(x_admin_key: str = Header(...)) -> None:
+    if x_admin_key != ADMIN_API_KEY:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Permission denied")
 
 
