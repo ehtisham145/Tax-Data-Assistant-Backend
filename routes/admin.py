@@ -10,7 +10,7 @@ from fastapi import status,BackgroundTasks
 from database_setup.crud.conversation import get_history
 from sqlalchemy.exc import SQLAlchemyError
 from schemas.chat import HistoryItem
-
+from database_setup.models import Conversation, Feedback 
 
 logger = logging.getLogger(__name__)
 router = APIRouter(dependencies=[Depends(verify_admin_key)])
@@ -59,25 +59,79 @@ def admin_get_user_by_email(email: str, db: Session = Depends(get_db)):
     return result
 
 
-@router.get("/admin/users/{user_id}/conversations", response_model=list[HistoryItem])
-def get_user_conversation_history(
-    user_id: int,
-    limit: int = Query(50, ge=1, le=200),
-    offset: int = Query(0, ge=0),
-    db: Session = Depends(get_db),
-):
-    """
-    Admin-only: kisi bhi user ki conversation history fetch karta hai.
-    """
+
+@router.get("/feedback")
+def list_feedback(limit: int = 100, offset: int = 0, db: Session = Depends(get_db)):
     try:
-        conversations = get_history(db, user_id=user_id, limit=limit, offset=offset)
-    except SQLAlchemyError:
+        items = (
+            db.query(Feedback)
+            .order_by(Feedback.created_at.desc())
+            .offset(offset)
+            .limit(limit)
+            .all()
+        )
+    except SQLAlchemyError as e:
+        logger.error(f"DB error fetching feedback: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch feedback")
+
+    return {
+        "success": True,
+        "feedback": [
+            {
+                "id": f.id,
+                "user_id": f.user_id,
+                "user_message": f.user_message,
+                "bot_response": f.bot_response,
+                "rating": f.rating,
+                "created_at": f.created_at.isoformat() + "Z",
+            }
+            for f in items
+        ],
+    }
+
+
+@router.get("/feedback/stats")
+def feedback_stats(db: Session = Depends(get_db)):
+    try:
+        total = db.query(Feedback).count()
+        thumbs_up = db.query(Feedback).filter(Feedback.rating == "thumbs_up").count()
+        thumbs_down = db.query(Feedback).filter(Feedback.rating == "thumbs_down").count()
+    except SQLAlchemyError as e:
+        logger.error(f"DB error fetching feedback stats: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch feedback stats")
+
+    return {"total": total, "thumbs_up": thumbs_up, "thumbs_down": thumbs_down}
+
+
+@router.get("/conversations/{user_id}")
+def admin_get_conversations(user_id: int, limit: int = 200, offset: int = 0, db: Session = Depends(get_db)):
+    try:
+        messages = (
+            db.query(Conversation)
+            .filter(Conversation.user_id == user_id)
+            .order_by(Conversation.created_at.asc())
+            .offset(offset)
+            .limit(limit)
+            .all()
+        )
+    except SQLAlchemyError as e:
+        logger.error(f"DB error fetching conversations: user_id={user_id} - {e}")
         raise HTTPException(status_code=500, detail="Failed to fetch conversation history")
 
-    if not conversations:
-        raise HTTPException(status_code=404, detail="No conversations found for this user")
+    return {
+        "success": True,
+        "messages": [
+            {
+                "id": m.id,
+                "role": m.role,
+                "message": m.message,
+                "created_at": m.created_at.isoformat() + "Z",
+            }
+            for m in messages
+        ],
+    }
 
-    return conversations
+
 
 # ─── Refresh Data Endpoint ────────────────────────────────────────────────────
 
