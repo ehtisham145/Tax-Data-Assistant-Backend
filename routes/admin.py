@@ -7,7 +7,6 @@ from utils.helpers import verify_admin_key
 import logging
 from utils.data_pipeline.pipeline import run_update_pipeline
 from fastapi import status,BackgroundTasks
-from utils.rag import build_retriever
 
 
 logger = logging.getLogger(__name__)
