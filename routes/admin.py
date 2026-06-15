@@ -26,6 +26,7 @@ def list_users(limit: int = 100, offset: int = 0, db: Session = Depends(get_db))
                 "id": u.id,
                 "name": u.name,
                 "email": u.email,
+                "phone":u.phone,
                 "created_at": u.created_at.isoformat() + "Z",
             }
             for u in users

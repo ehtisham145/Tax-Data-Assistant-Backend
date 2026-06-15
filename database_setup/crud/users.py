@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 # ─── REGISTER USER ───────────────────────────────────────────────────────────
-def register_user(db: Session, name: str, email: str) -> Tuple[bool, str, Optional[User]]:
+def register_user(db: Session, name: str, email: str,phone:str) -> Tuple[bool, str, Optional[User]]:
     """
     Registers a new user. Assigns admin rights to the very first user in the database.
 
@@ -27,7 +27,7 @@ def register_user(db: Session, name: str, email: str) -> Tuple[bool, str, Option
 
         total_users = db.execute(select(func.count()).select_from(User)).scalar_one()
 
-        new_user = User(name=name, email=email)
+        new_user = User(name=name, email=email,phone=phone)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
@@ -104,6 +104,7 @@ def get_user_by_email(db: Session, email: str) -> dict:
             "user_id": user.id,
             "name": user.name,
             "email": user.email,
+            "phone" : user.phone,
             "created_at": user.created_at,
         }
 
@@ -129,6 +130,7 @@ def get_user_by_id(db: Session, user_id: int) -> dict:
             "user_id": user.id,
             "name": user.name,
             "email": user.email,
+            "phone":user.phone,
             "created_at": user.created_at,
         }
 

@@ -40,17 +40,17 @@ async def lifespan(app: FastAPI):
 
     # 1. Ensure tables exist (idempotent safety net alongside migrations)
     try:
-        init_db()
-    except Exception as e:
-        logger.critical(f"Database init failed: {e}", exc_info=True)
-        raise
-
-    # 2. Run schema migrations before anything else touches the DB
-    try:
         migrate()
         logger.info("Migrations applied successfully")
     except Exception as e:
         logger.critical(f"Migration failed: {e}", exc_info=True)
+        raise
+
+    # 2. Ensure tables exist (idempotent safety net)
+    try:
+        init_db()
+    except Exception as e:
+        logger.critical(f"Database init failed: {e}", exc_info=True)
         raise
 
     # 3. OpenAI client

@@ -13,8 +13,9 @@ class User(Base):
     name      : Mapped[str]           = mapped_column(String(100), nullable=False)
     email     : Mapped[str]           = mapped_column(String(255), nullable=False, unique=True)
     created_at: Mapped[datetime] = mapped_column(
-    DateTime, default=lambda: datetime.now(timezone.utc)
-)
+    DateTime, default=lambda: datetime.now(timezone.utc))
+    phone : Mapped[str] = mapped_column(String(20), nullable=False)
+    test_column:Mapped[str]=mapped_column(String(20),nullable=True)
     # Relationships
     conversations: Mapped[list["Conversation"]] = relationship(
         "Conversation", back_populates="user", cascade="all, delete-orphan"

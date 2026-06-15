@@ -41,45 +41,45 @@ def _get_applied_versions(conn)->set[int]:
 
 #----------Define your Migrations List---------------------------------------
 
-MIGRATIONS=[
-#    (1, "add user_id column to feedback table", """
-#         ALTER TABLE feedback ADD COLUMN user_id INTEGER
-#     """),
-
+MIGRATIONS = [
+   (1, "add phone_number column to users table", """
+        ALTER TABLE users ADD COLUMN phone TEXT NOT NULL DEFAULT '';
+    """),
 ]
 
-
+#------Final Migration Function-----------------------------------------------
 #------Final Migration Function-----------------------------------------------
 def migrate() -> None:
     try:
         logger.info("Starting database migrations...")
 
         with engine.connect() as conn:
-            _ensure_migrations_table(conn)
-            applied = _get_applied_versions(conn)
-            pending = [m for m in MIGRATIONS if m[0] not in applied]
+            with conn.begin():
+                _ensure_migrations_table(conn)
+                applied = _get_applied_versions(conn)
+                pending = [m for m in MIGRATIONS if m[0] not in applied]
 
-            if not pending:
-                logger.info("No pending migrations - database is up to date")
-                return
+                if not pending:
+                    logger.info("No pending migrations - database is up to date")
+                    return
 
-            # Detect fresh install: if schema_migrations is empty AND
-            # other tables already exist (created by init_db's create_all),
-            # the schema is already current - just record migrations as applied.
-            is_fresh_install = len(applied) == 0 and _tables_exist(conn)
+                # SMART CHECK: Fresh install tabhi maana jayega jab applied khali ho 
+                # AUR database mein users table bhi na bana ho.
+                is_fresh_install = len(applied) == 0 and not _tables_exist(conn)
 
-            for version, description, sql in pending:
-                with conn.begin():
+                for version, description, sql in pending:
                     if not is_fresh_install:
                         logger.info(f"Applying migration {version}: {description}")
                         conn.execute(text(sql))
                     else:
-                        logger.info(f"Skipping migration {version} (fresh install, already in schema)")
+                        logger.info(f"Skipping migration {version} (fresh install, structure will be handled by init_db)")
+                    
+                    # Record the migration as tracked/applied
                     conn.execute(
                         text("INSERT INTO schema_migrations (version, description) VALUES (:v, :d)"),
                         {"v": version, "d": description},
                     )
-                logger.info(f"Migration {version} marked as applied")
+                    logger.info(f"Migration {version} marked as applied")
 
         logger.info("Database migration completed successfully")
 

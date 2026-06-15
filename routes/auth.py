@@ -20,7 +20,7 @@ async def register(req: RegisterRequest, db: Session = Depends(get_db)):
     """
     Register a new user. The first registered user is granted admin rights.
     """
-    success, message, user = register_user(db, name=req.name, email=req.email)
+    success, message, user = register_user(db, name=req.name, email=req.email,phone=req.phone)
 
     if not success:
         logger.warning(f"Registration failed for {req.email}: {message}")
@@ -31,6 +31,7 @@ async def register(req: RegisterRequest, db: Session = Depends(get_db)):
         user_id=user.id,
         name=user.name,
         email=user.email,
+        phone=user.phone,
     )
 
 
@@ -55,4 +56,5 @@ async def login(req: LoginRequest, db: Session = Depends(get_db)):
         user_id=user.id,
         name=user.name,
         email=user.email,
+        phone=user.phone,
     )
