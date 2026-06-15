@@ -80,8 +80,7 @@ async def chat(
     history.append({"role": "user", "content": body.message})
     save_history_to_memory(user_id, history)
 
-    # Persist user message after response is sent (guaranteed to run, errors logged)
-    background_tasks.add_task(_save_message_sync, user_id, "user", body.message)
+    await run_in_threadpool(_save_message_sync, user_id, "user", body.message)
 
     # 3. System prompt
     system_prompt = (
