@@ -34,27 +34,3 @@ async def register(req: RegisterRequest, db: Session = Depends(get_db)):
         phone=user.phone,
     )
 
-
-# ─── LOGIN ENDPOINT ───────────────────────────────────────────────────────────
-@router.post(
-    "/login",
-    response_model=UserResponse,
-    status_code=status.HTTP_200_OK,
-)
-async def login(req: LoginRequest, db: Session = Depends(get_db)):
-    """
-    Authenticate an existing user via email lookup.
-    """
-    success, message, user = login_user(db, email=req.email)
-
-    if not success:
-        logger.warning(f"Login failed for {req.email}: {message}")
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=message)
-
-    return UserResponse(
-        success=True,
-        user_id=user.id,
-        name=user.name,
-        email=user.email,
-        phone=user.phone,
-    )
