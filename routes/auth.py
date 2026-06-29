@@ -26,11 +26,14 @@ async def register(req: RegisterRequest, db: Session = Depends(get_db)):
         logger.warning(f"Registration failed for {req.email}: {message}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=message)
 
+    # message == "existing" => email pehle se DB me thi; frontend ise dekh kar
+    # seedha chat par redirect kar sakta hai. Dono soorat me success milta hai.
     return UserResponse(
         success=True,
         user_id=user.id,
         name=user.name,
         email=user.email,
         phone=user.phone,
+        is_existing=(message == "existing"),
     )
 

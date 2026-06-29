@@ -34,3 +34,4 @@ class UserResponse(BaseModel):
     name: str
     email: str
     phone : str
+    is_existing: bool = False

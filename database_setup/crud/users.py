@@ -22,10 +22,8 @@ def register_user(db: Session, name: str, email: str,phone:str) -> Tuple[bool, s
     try:
         existing = db.execute(select(User).where(User.email == email)).scalar_one_or_none()
         if existing:
-            logger.warning(f"Registration rejected - email already exists: {email}")
-            return False, "Email already registered", None
-
-        total_users = db.execute(select(func.count()).select_from(User)).scalar_one()
+            logger.info(f"Email already registered, returning existing user: {email}")
+            return True, "existing", existing
 
         new_user = User(name=name, email=email,phone=phone)
         db.add(new_user)
@@ -33,12 +31,17 @@ def register_user(db: Session, name: str, email: str,phone:str) -> Tuple[bool, s
         db.refresh(new_user)
 
         logger.info(f"User registered: id={new_user.id}")
-        return True, "Registration successful", new_user
+        return True, "registered", new_user
 
-    except IntegrityError as e:
+    except IntegrityError:
+        # Race: email got inserted between our check and commit — fetch and return it.
         db.rollback()
-        logger.warning(f"Registration integrity error for {email}: {e}")
-        return False, "Email already registered", None
+        existing = db.execute(select(User).where(User.email == email)).scalar_one_or_none()
+        if existing:
+            logger.info(f"Email already registered (race), returning existing user: {email}")
+            return True, "existing", existing
+        logger.warning(f"Registration integrity error for {email}")
+        return False, "Registration failed", None
     
     except SQLAlchemyError as e:
         db.rollback()
