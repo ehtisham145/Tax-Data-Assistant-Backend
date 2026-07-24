@@ -1,11 +1,45 @@
 --- Source: https://e-numerak.com/fta-compliance ---
-E-Numerak
-E-Invoicing Platform
+English
 Sign In
 E-Invoice Portal
-Compliance
+Home
+About
+Services
+E-Invoice
+Contact
+English
+Sign In
+E-Invoice Portal
+Regulatory Compliance
 FTA Compliance
 E-Numerak is built to meet the UAE Federal Tax Authority's e-invoicing requirements under Federal Decree-Law No. 16 of 2024.
+BIS 3.0
+UBL 2.1
+5-Corner Model
+PKI Signed
+e-numerak.com/compliance
+Compliance Status
+FTA Certified Platform
+Compliant
+BIS Billing 3.0
+Passed
+UBL 2.1 XML Generation
+Passed
+Digital Signing (PKI)
+Passed
+5-Corner Transmission
+Verified
+FAF Data Elements (32/32)
+Complete
+Regulatory Framework
+Decree-Law 16/2024
+BIS 3.0
+PINT Spec
+FTA Guidelines
+FTA Certified
+Compliance Pillars
+How We Meet FTA Requirements
+Every layer of the E-Numerak platform is engineered to satisfy UAE e-invoicing regulations.
 BIS 3.0 / UBL 2.1 Format
 Every invoice is generated as a structured UBL 2.1 XML document that conforms to the UAE PINT (Peppol International) billing specification.
 Digital Signing
@@ -14,6 +48,29 @@ Invoices are digitally signed with accredited PKI certificates, ensuring authent
 Invoices are transmitted through an Accredited Service Provider (ASP) and routed to the buyer and the FTA following the UAE 5-corner e-invoicing model.
 Record Retention
 Tax records are retained for the period mandated by UAE law, with full audit trails on every invoice action.
+PKI & Encryption
+End-to-end encryption and PKI-based digital signatures ensure invoice integrity and non-repudiation throughout the transmission lifecycle.
+Full Audit Trail
+Every invoice action — creation, validation, signing, submission — is logged with timestamps and user identity for complete traceability.
+Regulatory Timeline
+UAE E-Invoicing Roadmap
+The UAE e-invoicing mandate is being rolled out in phases to ensure a smooth transition for all businesses operating in the country.
+E-Numerak is designed to support taxpayers at every stage of the rollout, from early adoption through full compliance.
+2024
+Federal Decree-Law No. 16 mandates e-invoicing in the UAE
+2025
+Phase 1 — B2B & B2G e-invoicing goes live for large taxpayers
+2026
+Phase 2 — Middle segment and SME adoption period
+2027
+Full compliance — all taxable persons required to use e-invoicing
 Regulatory Basis
+Built on UAE Law
 UAE e-invoicing is mandated under Federal Decree-Law No. 16 of 2024. Phase 1 covers B2B and B2G transactions. E-Numerak generates compliant structured invoices, signs them, and transmits them to the FTA through accredited service providers — so your business stays compliant without the complexity.
 Talk to our compliance team
+Federal Decree-Law 16/2024
+BIS Billing 3.0
+UBL 2.1 / PINT
+5-Corner Model
+PKI Digital Signing
+FAF Compliance

@@ -1,15 +1,51 @@
 --- Source: https://e-numerak.com/contact ---
-E-Numerak
-E-Invoicing Platform
+English
+Sign In
+E-Invoice Portal
+Home
+About
+Services
+E-Invoice
+Contact
+English
 Sign In
 E-Invoice Portal
 Contact
 Get in Touch
 Questions about UAE e-invoicing compliance, E-Invoice integration, or the platform? Our team is here to help.
+Email Support
+Phone Support
+Live Chat
+24/7 Help
+e-numerak.com/support
+Live Support
+We're here to help
+Online
+Support Team
+S
+A
+M
+R
++3
+4 active
+Email Support
+support@e-numerak.com
+Phone Line
++971 4 123 4567
+Live Chat
+Avg. response 2 minutes
+Typical Response Time
+Mon–Fri, 9 AM – 6 PM GST
+< 2 hrs
+We reply fast
 Send a Message
-First Name *
-Last Name *
-Email Address *
+We typically respond within 24 hours
+First Name
+*
+Last Name
+*
+Email Address
+*
 Company / TRN (optional)
 Subject
 Select a topic…
@@ -18,8 +54,10 @@ E-Invoice Integration
 Platform Support
 Pricing / Demo
 Other
-Message *
+Message
+*
 Send Message
+Average response: < 24 hours
 Contact Information
 Email
 info@e-numerak.com
@@ -30,19 +68,17 @@ Sun – Thu, 9 AM – 6 PM GST
 Address
 Office Number 205, Malik Abdullah Ahmad Khalifa bin Hamidan al-Fulsi
 Deirah – Al-Khabisi, Dubai, UAE
-Frequently Asked Questions
-Is this platform FTA certified?
-›
-Yes — the platform is built against the UAE FTA Tax Accounting Software Certification Guidelines, capturing all required VAT FAF (21 fields) and Excise FAF (32 fields) data elements.
-Which invoice types are supported?
-›
-Tax Invoice (UBL 380), Credit Note (UBL 381), Commercial Invoice (UBL 480), and Continuous Supply invoices are all supported.
-How do I connect to the FTA network?
-›
-The platform uses the 5-corner model. In production, you connect through a UAE-accredited ASP (Accredited Service Provider) who routes invoices to the FTA.
-Can I have multiple companies?
-›
-Yes. The platform supports multi-company setups with isolated data and team members per company.
 FTA Resources
 Official UAE Federal Tax Authority documentation and certification guidelines.
 Visit tax.gov.ae
+FAQ
+Frequently Asked Questions
+Quick answers to the most common questions about our platform and compliance.
+Is this platform FTA certified?
+Yes — the platform is built against the UAE FTA Tax Accounting Software Certification Guidelines, capturing all required VAT FAF (21 fields) and Excise FAF (32 fields) data elements.
+Which invoice types are supported?
+Tax Invoice (UBL 380), Credit Note (UBL 381), Commercial Invoice (UBL 480), and Continuous Supply invoices are all supported.
+How do I connect to the FTA network?
+The platform uses the 5-corner model. In production, you connect through a UAE-accredited ASP (Accredited Service Provider) who routes invoices to the FTA.
+Can I have multiple companies?
+Yes. The platform supports multi-company setups with isolated data and team members per company.

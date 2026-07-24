@@ -1,11 +1,52 @@
 --- Source: https://e-numerak.com/services ---
-E-Numerak
-E-Invoicing Platform
+English
+Sign In
+E-Invoice Portal
+Home
+About
+Services
+E-Invoice
+Contact
+English
 Sign In
 E-Invoice Portal
 Our Services
 Everything for E-Numerak Compliance
 A complete stack for generating, validating, and submitting invoices — covering all UAE FTA requirements without the complexity.
+Tax Invoice
+Credit Note
+Commercial
+Continuous Supply
+e-numerak.com/services
+Service Hub
+6 active services
+All Operational
+Tax Invoice
+Active
+Credit Note
+Active
+Commercial Invoice
+Active
+12.4K
+Processed
+156
+Today
+99.2%
+Success Rate
+Recent Activity
+Tax Invoice #INV-2406
+Submitted
+2m ago
+Credit Note #CN-0891
+Validated
+15m ago
+Commercial #COM-1123
+Pending Review
+1h ago
+UBL 2.1 Ready
+What We Offer
+Comprehensive E-Invoicing Services
+A complete suite of tools designed to handle every aspect of UAE e-invoicing compliance — from creation to submission.
 Tax Invoice Generation
 Create UAE-compliant Tax Invoices, Credit Notes, Commercial Invoices, and Continuous Supply invoices. UBL 2.1 XML auto-generated on every save.
 Tax Invoice
@@ -26,7 +67,7 @@ TRN Check
 VAT Calculation
 Error Reporting
 PDF & XML Export
-Download human-readable PDF invoices (xhtml2pdf) and machine-readable UBL XML files for any invoice in any status.
+Download human-readable PDF invoices and machine-readable UBL XML files for any invoice in any status.
 PDF Download
 UBL XML
 A4 Format
@@ -44,74 +85,80 @@ Role-Based
 Admin
 Accountant
 Viewer
+Simple Process
+From Creation to Compliance
+A streamlined workflow that takes your invoice from draft to FTA submission in just a few steps.
+01
+Create & Validate
+Generate UAE-compliant invoices with auto-generated UBL 2.1 XML. Real-time validation catches errors instantly.
+02
+Review & Approve
+Preview PDF and XML outputs. Role-based approval workflow ensures accuracy before transmission.
+03
+Submit & Track
+Securely transmit via the 5-corner network. Full audit trail and FAF reporting built into every invoice.
+Audit Ready
 FAF Field Coverage
 All fields required by UAE Tax Accounting Software Certification Guidelines are captured.
+32
+Total FAF Fields
+21
+VAT Fields Covered
+11
+Excise Fields Covered
+100%
+FTA Compliant
 VAT FAF Fields (21)
-✓
+21
+fields covered
+Verified
 Company name
-✓
 User ID
-✓
 TRN
-✓
 FAF version indicator
-✓
 GL/ID
-✓
 Locations of suppliers
-✓
 Reverse charges
-✓
 Locations of customers
-✓
 Tax codes
-✓
 Invoice numbers
-✓
 Invoice dates
-✓
 Permit numbers
-✓
 Transaction IDs
-✓
 Debit amounts
-✓
 Credit amounts
-✓
 VAT amounts (actual currency)
-✓
 VAT amounts (AED)
-✓
 Accounts receivable
-✓
 Accounts payable
-✓
 Product/service references
-✓
 Description of goods/services
+Coverage
+21
+/
+21
+fields
 Excise FAF Extra Fields (11)
-✓
+11
+fields covered
+Verified
 Designated zone (warehouse) identifiers
-✓
 Open stock balances (Excise Tax implementation)
-✓
 Product codes
-✓
 Excise rate per product
-✓
 Transaction types
-✓
 Details of movement
-✓
 Transaction dates
-✓
 Tax payment dates
-✓
 Duty status of stock
-✓
 Stock adjustments (write-offs, losses)
-✓
 Physical location of goods
+Coverage
+11
+/
+11
+fields
+Get Started
 Try the Platform
 Create your first invoice in under 2 minutes.
 E-Invoice Portal

@@ -16,7 +16,6 @@ Toggle main menu
 search in site
 Close main menu
 Search
-Login
 Accessibility
 Switch Language
 استمع
@@ -44,7 +43,7 @@ UAE Electronic Invoice Mandatory Field Requirements
 Considerations for Selecting an Accredited Service Provider
 (286 KB, PDF)
 UAE eInvoicing Programme Introduction
-(9 MB, PDF)
+(3 MB, PDF)
 Legislative Documents
 Ministerial Resolution No. (66) of 2026 Amending Certain Provisions of Ministerial Resolution No. (244) of 2025 Regarding the Implementation of the Electronic Invoicing System
 (85 KB, PDF)
@@ -101,8 +100,7 @@ Name
 Email
 Your Feedback
 Note:
-all fields are mandatory, except the ones marked as optional
-Reset
+All fields are mandatory, except the ones marked as optional.
 Did you find this content useful?
 You can help us improve by providing your feedback about your experience.
 Yes

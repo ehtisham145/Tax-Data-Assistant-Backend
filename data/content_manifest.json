@@ -1,45 +1,45 @@
 {
   "data/raw/company_info/about.txt": {
-    "hash": "9824628f7ee2f1b0d749d22d7f2e8dfc",
+    "hash": "f16bd0737a56d281a8933a427a19a322",
     "source_type": "company_info",
     "category": "about",
-    "last_updated": "2026-06-14T16:18:22.934849+00:00"
+    "last_updated": "2026-07-24T11:37:27.985525+00:00"
   },
   "data/raw/company_info/contact.txt": {
-    "hash": "ecb9627109f185a3a06bcd652a30f3b7",
+    "hash": "6733bdca883c591b1a67f6ba3f67722d",
     "source_type": "company_info",
     "category": "contact",
-    "last_updated": "2026-06-14T16:18:22.934849+00:00"
+    "last_updated": "2026-07-24T11:37:28.042790+00:00"
   },
   "data/raw/company_info/fta_compliance.txt": {
-    "hash": "f60f64c31450da4ff0a066f8be415f40",
+    "hash": "16cae0efe124468f7afaff2936fbd3cf",
     "source_type": "company_info",
     "category": "fta_compliance",
-    "last_updated": "2026-06-14T16:18:22.934849+00:00"
+    "last_updated": "2026-07-24T11:37:28.073995+00:00"
   },
   "data/raw/company_info/home.txt": {
-    "hash": "060572d006ea4da8570a577f3b68aaae",
+    "hash": "7cd56fec044f03c97497bd4b388697d1",
     "source_type": "company_info",
     "category": "home",
-    "last_updated": "2026-06-14T16:18:22.955306+00:00"
+    "last_updated": "2026-07-24T11:37:28.129174+00:00"
   },
   "data/raw/company_info/peppol.txt": {
-    "hash": "616e599b20d6d609b460e4ec2b2f5c19",
+    "hash": "fd70089676d8f9571f49dbf7a29f10e6",
     "source_type": "company_info",
     "category": "peppol",
-    "last_updated": "2026-06-14T16:18:22.955306+00:00"
+    "last_updated": "2026-07-24T11:37:28.217921+00:00"
   },
   "data/raw/company_info/services.txt": {
-    "hash": "d568dc7514bc1138abbb3467f08255b9",
+    "hash": "eba6e873df0aac16df6b40539550a04e",
     "source_type": "company_info",
     "category": "services",
-    "last_updated": "2026-06-14T16:18:22.955306+00:00"
+    "last_updated": "2026-07-24T11:37:28.251770+00:00"
   },
   "data/raw/uae_tax_knowledge/fta_einvoicing_clarifications.txt": {
-    "hash": "0c40fd009e280ae06ac83b61e2c98d91",
+    "hash": "980e319cf2c39b9d273f24ce5999cc75",
     "source_type": "uae_tax_knowledge",
     "category": "fta_einvoicing_clarifications",
-    "last_updated": "2026-06-15T07:50:50.025605+00:00"
+    "last_updated": "2026-07-24T11:37:28.296522+00:00"
   },
   "data/raw/uae_tax_knowledge/fta_vat_awareness_guide.txt": {
     "hash": "6591fd0be84685dd2d16ebfcc2773e03",
@@ -48,16 +48,16 @@
     "last_updated": "2026-06-14T16:18:22.955306+00:00"
   },
   "data/raw/uae_tax_knowledge/fta_vat_guide.txt": {
-    "hash": "2c5465309b9a426f09309049c5f98dac",
+    "hash": "bf296cec9df54dada1384b58ff5994e9",
     "source_type": "uae_tax_knowledge",
     "category": "fta_vat_guide",
-    "last_updated": "2026-06-15T07:50:50.332025+00:00"
+    "last_updated": "2026-07-24T11:37:28.385545+00:00"
   },
   "data/raw/uae_tax_knowledge/mof_einvoicing_overview.txt": {
-    "hash": "7e8a62c50c112b40106433119fb69992",
+    "hash": "8b0747ad3b389393083f7d6aeff9f6aa",
     "source_type": "uae_tax_knowledge",
     "category": "mof_einvoicing_overview",
-    "last_updated": "2026-06-14T16:18:22.955306+00:00"
+    "last_updated": "2026-07-24T11:37:28.422937+00:00"
   },
   "data/raw/qa_dataset/faq_pairs.txt": {
     "hash": "ce34537ab914f684362d27e8c7a767ce",
