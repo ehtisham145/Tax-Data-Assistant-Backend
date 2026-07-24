@@ -1,9 +1,3 @@
-
-Here is a professional and structured README.md file tailored for your Enumerak Tax Assistant chatbot. It is designed to clearly explain the project, stack, setup, and configuration (including the CORS setup we discussed) so that anyone—including you in the future—can easily understand and run it.
-
-You can copy and paste this directly into a file named README.md in your project root folder.
-
-Markdown
 # Enumerak Tax Assistant Chatbot
 
 An AI-powered conversational tax assistant designed for the **Enumerak** website. This chatbot helps users with tax consultancy queries by providing instant, accurate, and context-aware responses regarding tax regulations, filing, and financial guidance.
